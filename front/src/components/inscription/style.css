@@ -1,0 +1,48 @@
+.inscription{
+    /* background-color:rgb(128, 96, 60); */
+    padding: 2em;
+}
+
+.inscription h2{
+    text-align: center;
+}
+
+form{
+    width: 100%;
+    min-height: 70vh;
+ 
+}
+
+input{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    margin: 0.5em auto;
+}
+
+input:focus{
+    outline-color: #84c476
+}
+
+button{
+    background-color: #84c476;
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: 0.4s ease;
+    font-size: 15px;
+    color:#1c3d15;
+
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+}
+
+.droite{
+    text-align: right;
+    margin-top: 1em;
+}
+
+
+
+
+

@@ -1,0 +1,97 @@
+body{
+    width: 90%;
+    margin: 0 auto;
+}
+
+h1{
+    font-family: 'Zilla Slab', serif;
+}
+
+.alert{
+    margin-bottom: 2em;
+}
+
+.alertRed{
+ background-color: #f8d7da;
+ color: #721c24;
+ border-color: #f5c6cb;
+ padding: 2px;
+ text-align: center;
+}
+
+.alertGreen{
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 2px;
+    text-align: center;
+}
+
+.incorrect{
+    border: 2px solid #721c24;
+    animation: non .4s forwards
+}
+
+.logo{
+    width: 150px;
+ 
+}
+.user{
+    width: 40px;
+    transition: 0.4s all ease-in;
+    
+}
+
+.user:hover{
+    fill:#d164a7
+}
+
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #84C476
+}
+
+@keyframes non{
+    0%{
+        transform: translateX(0px);
+    }
+    33%{
+        transform: translateX(-10px);
+    }
+    66%{
+        transform: translateX(10px);
+    }
+    100%{
+        transform: translateX(0px);
+    }
+    /* 80%{
+        transform: translateX(10px);
+    }
+    100%{
+        transform: translateX(0px);
+    } */
+}
+
+
+#app {
+    font-family: 'Quicksand', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    color: #2c3e50;
+    margin-top: 60px;
+}
+
+ @media (min-width: 1250px){
+    body{
+        width: 50%;
+    }
+}
