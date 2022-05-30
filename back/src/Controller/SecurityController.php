@@ -101,4 +101,21 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+
+    /**
+     * @Route("api/updateEmail/{id}", methods={"PUT"})
+     */
+    public function updateEmail(ManagerRegistry $mr, HttpFoundationRequest $request, int $id){
+        $manager = $mr->getManager();
+        $makeUser = json_decode($request->getContent());
+        $user = $mr->getRepository(User::class)->find($id);
+        
+        $user->setEmail($makeUser->{'email'});
+
+        $manager->persist($user);
+        $manager->flush();
+        return new Response('ok', Response::HTTP_OK);
+    }
+
 }

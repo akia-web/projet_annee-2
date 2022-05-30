@@ -6,9 +6,15 @@ body{
 h1{
     font-family: 'Zilla Slab', serif;
 }
-
+p{
+    font-size: 20px;
+}
 .alert{
     margin-bottom: 2em;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
 }
 
 .alertRed{
@@ -72,12 +78,6 @@ h1{
     100%{
         transform: translateX(0px);
     }
-    /* 80%{
-        transform: translateX(10px);
-    }
-    100%{
-        transform: translateX(0px);
-    } */
 }
 
 

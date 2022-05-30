@@ -2,49 +2,51 @@
     <section class="inscription">
         <h2>Inscription</h2>
 
-            <div class="alert alertRed" v-if=" messages[0]">
-                <p v-for="(item, index) in messages"> {{item}}</p>
+            <div v-if=" messages[0]">
+                <message-invalide v-for="(item, index) in messages" :message="messages[index]"></message-invalide>
             </div>
+           
 
             <div class="alert alertGreen" v-if=" messagesValidee != null">
                 <p > {{messagesValidee}}</p>
             </div>
 
-           <form> 
+        
             <input id="email" type="email" placeholder="email"><br>
             <input id="password" type="password" placeholder ="mot de passe"><br>
             <input id="confirmPassword" type="password" placeholder = "Confirmation du mot de passe"> <br>
 
-            <div class="droite">
-                <button @click="inscription">S'inscrire</button>
-            </div>
+            <bouton :message="'S\'inscrire'" @click="inscription"></bouton>
            
-          </form>
+        
 
     </section>
   
 </template>
 
 <script>
+import Bouton from '../bouton/Bouton.vue'
+import messageInvalide from '../messages/messageInvalide/messageInvalide.vue'
 export default {
+  components: { messageInvalide, Bouton },
   name: 'Inscription',
     data(){
     return{
      
-      formValide: false,
-      emailValide: false,
-      mdpValide: false,
-      matchMdpAndConfirmMdp: false,
+      formValide: null,
+      emailValide: null,
+      mdpValide: null,
+      matchMdpAndConfirmMdp: null,
       messages : [],
       messagesValidee: null,
-      errors: []
     }
   },
   methods:{
-      inscription(event){
-         
-        event.preventDefault()
-        this.messages = []
+      inscription(){  
+        if(this.messages.length>0){
+            this.messages = []
+        }
+       
         const email = document.querySelector("#email")
         const password = document.querySelector("#password")
         const confirmPassword = document.querySelector("#confirmPassword")
@@ -56,11 +58,13 @@ export default {
             this.messages.push("l'email est vide")
             email.classList.add("incorrect") 
             
+            
         }else if(email.value.length > 0 && !email.value.match(regex)){
             
             this.messages.push("Email invalide."); 
             this.messages.push("ex : jean@exemple.com")
             email.classList.add("incorrect") 
+            
             
         }else{
             email.classList.remove("incorrect")
@@ -72,9 +76,11 @@ export default {
         if(password.value.length< 1){
             this.messages.push("Le mot de passe est vide");
             password.classList.add("incorrect")  
+            
         }else if(password.value.length< 8){
             this.messages.push("Le mot de passe trop court"); 
             password.classList.add("incorrect") 
+            
         }else{
             password.classList.remove("incorrect") 
             this.mdpValide = true
@@ -84,6 +90,7 @@ export default {
        if(confirmPassword.value.length < 1){
             this.messages.push("Le mot de passe de confirmation est vide"); 
             confirmPassword.classList.add("incorrect") 
+            
        }else if(password.value != confirmPassword.value){
             this.messages.push("Les mots de passes ne sont pas les mêmes"); 
             confirmPassword.classList.add("incorrect") 
@@ -125,7 +132,7 @@ export default {
         }
 
       
-      }
+      }, 
   }
 
 }
