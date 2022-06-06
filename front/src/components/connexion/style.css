@@ -98,5 +98,9 @@ hr{
         width: 50%;
     }
     
+    .page{
+        width: 70%;
+        margin: 0 auto
+    }
 
 }

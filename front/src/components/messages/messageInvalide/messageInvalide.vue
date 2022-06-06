@@ -1,7 +1,7 @@
 <template>
-        <div class="alert alertRed">
+        <div class="alert alertRed" v-for="(item, index) in tableau">
         <span @click="fermer">x</span>
-        <p>{{message}}</p>
+        <p>{{item}}</p>
     </div>
     
 </template>
@@ -11,17 +11,14 @@
 export default{
     methods:{
         fermer(){
-            let parent = event.target.parentNode.parentNode
-            let enfant = event.target.parentNode
-            enfant.classList.add("supprimer")
-         
-           setTimeout( function () {
-               parent.removeChild(enfant)}, 600 ) 
-
+            let message = event.target.nextSibling.innerHTML
+            let indexMessageSupprimer = this.tableau.indexOf(message)
+            let tableau = this.tableau          
+            setTimeout( function () {tableau.splice(indexMessageSupprimer,1)}, 100 )   
         }
     },
     props: {
-        message: String
+        tableau: Array
     }
 }
 

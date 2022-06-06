@@ -92,6 +92,11 @@ p{
 
  @media (min-width: 1250px){
     body{
-        width: 50%;
+        width: 80%;
+    }
+
+    .navbar{
+           width: 70%;
+        margin: 0 auto
     }
 }

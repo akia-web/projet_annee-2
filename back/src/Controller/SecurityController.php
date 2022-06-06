@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\BrowserKit\Request;
@@ -84,15 +85,45 @@ class SecurityController extends AbstractController
       /**
      * @Route("api/get-user", methods={"GET"})
      */
-    public function getUsers(): Response
-    {
+    // public function getUsers(): Response
+    // {
 
-        dd($_SESSION["user"]);
+    //     dd($_SESSION["user"]);
      
 
-        return new Response("lala", Response::HTTP_OK);
-    }
+    //     return new Response("lala", Response::HTTP_OK);
+    // }
   
+
+    /**
+     * @Route("api/user", methods={"GET"})
+     */
+    public function getCurrentUser(HttpFoundationRequest $request, ManagerRegistry $mr)
+    {
+      $request->query->get("email");
+      
+        if( $request->query->get("email") == null|| $request->query->get("id") == null){
+            return new Response(json_encode(false), Response::HTTP_BAD_REQUEST);
+        }
+        
+
+        $id = $request->query->get("id");
+        $email =$request->query->get("email");
+
+        $user = $mr->getRepository(User::class)->find($id);
+        // dd($user->getId());
+
+        if($user == null){
+            return new Response(json_encode(false), Response::HTTP_NOT_FOUND);
+        }
+        
+        if($user->getId() != $id || $user->getEmail() != $email){
+            return new Response(json_encode(false), Response::HTTP_FORBIDDEN);
+        }
+        
+        return new Response(json_encode(true), Response::HTTP_OK);
+    
+    }
   
 
 

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from '@/components/home/Home'
 import ConnexionApp from '@/components/connexion/ConnexionApp'
 import Inscription from '@/components/inscription/Inscription'
+import Annonces from '@/components/annonces/Annonces'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -19,6 +20,11 @@ const router = createRouter({
         {
             path: '/inscription',
             component: Inscription,
+        },
+        {
+            path: '/nouvelle-annonce',
+            name: 'nouvelle-annonce',
+            component: Annonces,
         },
 
         // routes dynamique

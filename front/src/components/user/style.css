@@ -29,3 +29,11 @@ p{
 .identity h1{
     text-align: center;
 }
+
+@media (min-width: 1250px){
+    .identity{
+        width: 70%;
+        margin: 0 auto
+    }
+}
+

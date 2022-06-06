@@ -58,7 +58,7 @@ export default {
     disconnect(){
       localStorage.removeItem("animoId") 
       localStorage.removeItem("animoEmail") 
-     document.location.href = "connexion"
+     document.location.href = "/"
       },
 
     sendNewEmail(){

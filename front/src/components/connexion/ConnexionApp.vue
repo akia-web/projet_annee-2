@@ -1,18 +1,20 @@
 <template>
-    <div v-if="!emailStorage" class="connexion">
+    <div v-if="!emailStorage" class="connexion page">
 
    
      <div class="bloc1">
           <h1>Connexion <img src="../../assets/herisson.png" alt=""></h1>
-          <p>{{msg}}</p>
 
-          <form>
+            <div v-if=" messagesInvalide[0]">
+              <message-invalide :tableau="messagesInvalide"></message-invalide>
+            </div>
+            
             <input type="text" name="" id="emailConnexion" placeholder="email"><br>
             <input type="password" name="" id="password2" placeholder="mot de passe"><br>
             <div class="droite">
-              <bouton message="se connecter" @click="register"></bouton> <br>
+              <bouton :message="'se connecter'" @click="register"></bouton> <br>
             </div>
-          </form>
+          
       </div>
       <hr>
 
@@ -34,13 +36,13 @@
         
         
         <div class="inscription">
-          <bouton class="link" message="Inscription" @click="redirectInscription"></bouton> <br>
+          <bouton class="link" :message="'Inscription'" @click="redirectInscription"></bouton> <br>
           
         </div>
       </div>
 
     </div>
-    <div v-else>
+    <div class="page" v-else>
       <user-app></user-app>
     </div>
 </template>
@@ -49,12 +51,13 @@
 import Inscription from '@/components/inscription/Inscription.vue'
 import UserApp from '../user/UserApp.vue'
 import Bouton from '../bouton/Bouton.vue'
+import MessageInvalide from '../messages/messageInvalide/messageInvalide.vue'
 export default {
 
   name: 'ConnexionApp',
   data(){
     return{
-      msg: null,
+      messagesInvalide: [],
       email: null,
       id:null,
       emailStorage : localStorage.getItem("animoEmail"),
@@ -80,21 +83,17 @@ export default {
         console.log(result.data) 
         this.email= result.data.email,
         this.id = result.data.id  
-        this.msg = "connexion réussi"
         localStorage.setItem('animoId',this.id)
         localStorage.setItem('animoEmail', this.email)
         this.isConnected = true
         if(this.isConnected){
-          this.$router.push('home');
+          this.$router.push('/');
         }
       
         
       }catch(e){
-        this.msg = "Les identifiants sont incorrect"
-      }
-      
-     
-    
+         this.messagesInvalide.push("Les identifiants sont incorrect") 
+      } 
     },
 
     redirectInscription(){
@@ -104,7 +103,8 @@ export default {
    components: {
   Inscription,
       UserApp,
-      Bouton
+      Bouton,
+      MessageInvalide
   }
 }
 </script>

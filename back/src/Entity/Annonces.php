@@ -22,15 +22,20 @@ class Annonces
     #[ORM\Column(type: 'string', length: 255)]
     private $lieu;
 
-    #[ORM\Column(type: 'date')]
-    private $date;
-
-    #[ORM\Column(type: 'time')]
-    private $time;
 
     #[ORM\ManyToOne(targetEntity: user::class, inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $images;
+
+    #[ORM\ManyToOne(targetEntity: Categories::class, inversedBy: 'annonces')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $categorie;
+
+    #[ORM\Column(type: 'datetime')]
+    private $date;
 
     public function getId(): ?int
     {
@@ -85,17 +90,6 @@ class Annonces
         return $this;
     }
 
-    public function getTime(): ?\DateTimeInterface
-    {
-        return $this->time;
-    }
-
-    public function setTime(\DateTimeInterface $time): self
-    {
-        $this->time = $time;
-
-        return $this;
-    }
 
     public function getUser(): ?user
     {
@@ -105,6 +99,30 @@ class Annonces
     public function setUser(?user $user): self
     {
         $this->userId = $user;
+
+        return $this;
+    }
+
+    public function getImages(): ?string
+    {
+        return $this->images;
+    }
+
+    public function setImages(?string $images): self
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categories
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categories $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

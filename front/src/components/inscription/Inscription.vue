@@ -3,7 +3,8 @@
         <h2>Inscription</h2>
 
             <div v-if=" messages[0]">
-                <message-invalide v-for="(item, index) in messages" :message="messages[index]"></message-invalide>
+                <!-- <message-invalide v-for="(item, index) in messages" :message="messages[index]"></message-invalide> -->
+                <message-invalide :tableau="messages"></message-invalide>
             </div>
            
 
@@ -43,7 +44,7 @@ export default {
   },
   methods:{
       inscription(){  
-        if(this.messages.length>0){
+        if(this.messages.length<0){
             this.messages = []
         }
        
