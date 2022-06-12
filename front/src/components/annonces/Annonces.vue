@@ -3,47 +3,47 @@
         <h2>Créer une nouvelle annonce</h2>
        
        
-       <div class="formulaire">
-        <div class="gauche">
+        <div class="formulaire">
+          <div class="gauche">
             <div class="flex">
-            <input type="datetime-local" name="" id="" v-model="date">
-            <select v-model="categorie">
-                <option disabled value="choisir">Choisir une catégorie</option>
-                <option>blabla</option>
-            </select>
+              <input type="datetime-local" name="" id="" v-model="date">
+              <select v-model="categorie">
+                  <option disabled value="choisir">Choisir une catégorie</option>
+                  <option>blabla</option>
+              </select>
             </div>
             
             <input type="text" placeholder="titre" v-model="titre"> <br>
             <textarea rows="20" placeholder="Description" v-model="description"></textarea>
+
+            <button @click="afficher" class="btnAddImg" v-if="imgSelected == null">Ajouter une image <img class="logo" src="../../assets/image.svg" alt=""> </button> <br>
+            <button @click="afficher" class="btnAddImg" v-if="imgSelected != null">Modifier  l'image <img class="logo" src="../../assets/image.svg" alt=""> </button> <br>
+
+            <img v-if="imgSelected != null" :src="imgSelected" alt="">
+           
         </div>
 
         <div class="droite">
-            <input type="text" placeholder="adresse" v-model="adresse">
-            <input type="text" placeholder="complément d'adresse"  v-model="complementAdresse">
-            <input type="text" placeholder="code postal"  v-model="codePostal">
-            <input type="text" placeholder="ville"  v-model="ville">
-
-            <button @click="afficheCarte">Prévisualiser la carte</button>
-            
-            <iframe  :src=lienCarte frameborder="0"></iframe>
+          <input type="text" placeholder="adresse" v-model="adresse">
+          <input type="text" placeholder="complément d'adresse"  v-model="complementAdresse" @change="afficheCarte">
+          <input type="text" placeholder="code postal"  v-model="codePostal" @change="afficheCarte">
+          <input type="text" placeholder="ville"  v-model="ville" @change="afficheCarte">
+          <iframe v-if="lienCarte!=null" :src=lienCarte frameborder="0"></iframe>
         </div>
+      </div>
+       <bouton class="center" :message="'Valider l\'annonce'"></bouton> <br>
       
-       </div>
-      
-      <bouton :message="'Valider l\'annonce'"></bouton> <br>
-      <button @click="afficher" >Ajouter une image</button>
-        
+     
+     
 
-
+        <!-- POPUP-->
         <div id="searchImage" class="searchImage visibility" >
-            <span class="fermer">x</span>
+            <span class="fermer" @click="fermer">x</span>
             <h2>Choisissez une image</h2>
-            <input type="text" placeholder="rechercher une image" v-model="motcle" v-on:keyup.enter="getImage" class="rechercheImage">
-              <div class="resultImage" >
-                <img class="image" :src=item alt="" @click="addImg(item)" v-for="item in tableauImages">
-            
-            
-        </div>
+            <input type="text" placeholder="Quel mot défini votre annonce?" v-model="motcle" v-on:keyup.enter="getImage" class="rechercheImage">
+            <div class="resultImage" >
+              <img class="image" :src=item alt="" @click="addImg(item)" v-for="item in tableauImages">   
+            </div>
         </div>
 
       
@@ -78,11 +78,8 @@ export default {
     images:null,
     motcle:null,
     tableauImages: [],
-    imgSelected:null
-  
-
-
-
+    imgSelected:null,
+    send:false,
     }
   },
    methods:{
@@ -107,55 +104,71 @@ export default {
       },
 
       afficheCarte(){
-          this.lienCarte = "https://www.google.com/maps?q="+this.adresse+","+this.codePostal+this.ville+"&output=embed"
+          if(this.adresse!=null && this.codePostal != null && this.ville !=null){
+            this.lienCarte = "https://www.google.com/maps?q="+this.adresse+","+this.codePostal+this.ville+"&output=embed"
+          }
+          
       },
 
-
+      getSendButton(){
+       
+      },
 
      async getImage(){
-          this.urlApi = "https://api.pexels.com/v1/search?query="+this.motcle+"&per_page=15&page=1&orientation=landscape"
-        //  this.urlApi = "https://api.pexels.com/v1/search?query=dog&per_page=15&page=1&orientation=landscape"
-  
+        this.urlApi = "https://api.pexels.com/v1/search?query="+this.motcle+"&per_page=30&page=1&orientation=landscape"         
+        await axios.get(
+          this.urlApi,{
+            headers:{
+              "Authorization": this.apikey
+            }
+            }).then((res)=>{
+              console.log(res.data.photos)
+              this.images=res.data.photos     
+          },
+          (error)=>{
 
-         
-        let response = await axios.get(this.urlApi,{
-             headers:{
-                 "Authorization": this.apikey
-                }
-             }).then((res)=>{
-                 console.log(res.data.photos)
-                this.images=res.data.photos
-
-              
-                
-        },
-        (error)=>{
-          
-        })    
-            this.tableauImages = []
-            let response2 = this.images
+          })    
+          this.tableauImages = []
+          let response2 = this.images
           for(let i=0; i<response2.length; i++){
-                    this.tableauImages.push(response2[i].src.medium)
-                }
+            this.tableauImages.push(response2[i].src.medium)
+          }
       },
     
         addImg(item){
-            if(confirm("voulez-vous choisir cette image")==true){
-                this.imgSelected = item
-                console.log(this.imgSelected)
-            }
-            
+          if(confirm("voulez-vous choisir cette image")==true){
+              this.imgSelected = item
+              console.log(this.imgSelected)
+              this.fermer()
+          }  
         },
 
         afficher(){
-            console.log("bouh")
             let popup = document.querySelector("#searchImage")
-            console.log(popup)
+            let page = document.querySelector(".formulaire")
             popup.classList.remove("visibility")
-        }
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+            page.style.opacity = 0
+
+        },
+
+        fermer(){
+          let popup = document.querySelector("#searchImage")
+          popup.classList.add("visibility")
+          let page = document.querySelector(".formulaire")
+          page.style.opacity = 1
+        },
+
 
       
-    }
+    },
+
+ 
+  
+
+
+
 
 }
 
