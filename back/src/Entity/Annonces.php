@@ -19,10 +19,6 @@ class Annonces
     #[ORM\Column(type: 'text')]
     private $description;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $lieu;
-
-
     #[ORM\ManyToOne(targetEntity: user::class, inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
@@ -36,6 +32,15 @@ class Annonces
 
     #[ORM\Column(type: 'datetime')]
     private $date;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $adresse;
+
+    #[ORM\Column(type: 'integer')]
+    private $codepostal;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $ville;
 
     public function getId(): ?int
     {
@@ -66,17 +71,6 @@ class Annonces
         return $this;
     }
 
-    public function getLieu(): ?string
-    {
-        return $this->lieu;
-    }
-
-    public function setLieu(string $lieu): self
-    {
-        $this->lieu = $lieu;
-
-        return $this;
-    }
 
     public function getDate(): ?\DateTimeInterface
     {
@@ -98,7 +92,7 @@ class Annonces
 
     public function setUser(?user $user): self
     {
-        $this->userId = $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -123,6 +117,42 @@ class Annonces
     public function setCategorie(?Categories $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCodepostal(): ?int
+    {
+        return $this->codepostal;
+    }
+
+    public function setCodepostal(int $codepostal): self
+    {
+        $this->codepostal = $codepostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }

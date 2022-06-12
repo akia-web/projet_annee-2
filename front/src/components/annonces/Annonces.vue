@@ -1,6 +1,7 @@
 <template>
     <div class="page">
         <h2>Créer une nouvelle annonce</h2>
+        <message-invalide :tableau="message"></message-invalide>
        
        
         <div class="formulaire">
@@ -9,7 +10,7 @@
               <input type="datetime-local" name="" id="" v-model="date">
               <select v-model="categorie">
                   <option disabled value="choisir">Choisir une catégorie</option>
-                  <option>blabla</option>
+                  <option>balade</option>
               </select>
             </div>
             
@@ -31,7 +32,7 @@
           <iframe v-if="lienCarte!=null" :src=lienCarte frameborder="0"></iframe>
         </div>
       </div>
-       <bouton class="center" :message="'Valider l\'annonce'"></bouton> <br>
+       <bouton class="center" :message="'Valider l\'annonce'" @click="sendAnnonce"></bouton> <br>
       
      
      
@@ -57,8 +58,9 @@
 
 
 import Bouton from '../bouton/Bouton.vue';
+import MessageInvalide from '../messages/messageInvalide/messageInvalide.vue';
 export default {
-  components: { Bouton },
+  components: { Bouton, MessageInvalide },
   name: 'Annonces',
   data(){
     return{
@@ -80,6 +82,7 @@ export default {
     tableauImages: [],
     imgSelected:null,
     send:false,
+    message: []
     }
   },
    methods:{
@@ -111,7 +114,15 @@ export default {
       },
 
       getSendButton(){
-       
+       if(this.ville != null){
+         this.send = true
+       } 
+      },
+
+      lala(){
+        if(this.ville != null){
+          this.send = true
+        }
       },
 
      async getImage(){
@@ -160,9 +171,55 @@ export default {
           page.style.opacity = 1
         },
 
+        sendAnnonce(){
+           let dateDuJour = new Date();
+            if(dateDuJour<this.date){
+              console.log("pas bien")
+            }else if(dateDuJour>this.date){
+              console.log("bien")
+            }
+          if(this.date !=null && this.categorie!=null && this.titre !=null && this.description!=null && this.imgSelected && 
+          this.adresse!=null && this.codePostal !=null && this.ville != null){
+           
 
+          
+            
+            let annonce = {
+              "idUser": localStorage.getItem("animoId"),
+              "emailUser": localStorage.getItem("animoEmail"),
+              "titre": this.titre ,
+              "description": this.description,
+              "categorie": this.categorie,
+              "image": this.imgSelected,
+              "date": this.date,
+              "adresse": this.adresse,
+              "codePostal": this.codePostal,
+              "ville": this.ville
+
+            }
+
+
+            let url = "http://127.0.0.1:8000/api/annonces"
+            
+            axios.post(url,annonce).then((res)=>{
+            
+              this.$router.push('/')
+               
+            },
+            (error)=>{
+                console.log(error)
+                this.message.push("une erreur s'est produite lors de l'inscription")
+            }) 
+
+
+
+          }else{
+            this.message.push("Tous les champs ne sont pas remplis")
+          }
+        }
       
     },
+ 
 
  
   

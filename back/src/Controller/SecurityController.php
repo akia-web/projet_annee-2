@@ -4,18 +4,17 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\Mapping\Id;
+use App\Service\UserService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
+
+
 use stdClass;
+
 
 class SecurityController extends AbstractController
 {
@@ -28,6 +27,7 @@ class SecurityController extends AbstractController
         
         $user = new User();
         $makeUser = json_decode($request->getContent());
+  
       
         $getPassword = $makeUser->{"password"};
        
@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
      /**
      * @Route("api/register", methods={"POST"})
      */
-    public function login2(HttpFoundationRequest $request, UserRepository $userRepository): Response
+    public function register(HttpFoundationRequest $request, UserRepository $userRepository): Response
     {
         $requestUser = json_decode($request->getContent());
         $maybeUser = $userRepository->findOneBy(['email' => $requestUser->{'email'}]);
@@ -82,46 +82,23 @@ class SecurityController extends AbstractController
         return new Response($message, Response::HTTP_OK);
     }
 
-      /**
-     * @Route("api/get-user", methods={"GET"})
-     */
-    // public function getUsers(): Response
-    // {
-
-    //     dd($_SESSION["user"]);
-     
-
-    //     return new Response("lala", Response::HTTP_OK);
-    // }
   
 
     /**
      * @Route("api/user", methods={"GET"})
      */
-    public function getCurrentUser(HttpFoundationRequest $request, ManagerRegistry $mr)
+    public function findCurrentUser(HttpFoundationRequest $request, ManagerRegistry $mr, UserService $userService)
     {
-      $request->query->get("email");
-      
-        if( $request->query->get("email") == null|| $request->query->get("id") == null){
-            return new Response(json_encode(false), Response::HTTP_BAD_REQUEST);
-        }
-        
 
-        $id = $request->query->get("id");
-        $email =$request->query->get("email");
+        $response = $userService->getCurrentUser($request, $mr);
+        // dd($response);
+        $code = $response ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST;
+        $user = new User($response);
 
-        $user = $mr->getRepository(User::class)->find($id);
-        // dd($user->getId());
+        // dd($response);
 
-        if($user == null){
-            return new Response(json_encode(false), Response::HTTP_NOT_FOUND);
-        }
-        
-        if($user->getId() != $id || $user->getEmail() != $email){
-            return new Response(json_encode(false), Response::HTTP_FORBIDDEN);
-        }
-        
-        return new Response(json_encode(true), Response::HTTP_OK);
+         return new Response(json_encode($response) , $code);
+        // return $user;
     
     }
   
