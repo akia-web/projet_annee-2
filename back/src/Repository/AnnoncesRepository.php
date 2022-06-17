@@ -45,6 +45,13 @@ class AnnoncesRepository extends ServiceEntityRepository
         }
     }
 
+    // public function apiFindAll(){
+    //     $qb = $this->createQueryBuilder('a')
+    //     ->select('a.id', 'a.name', 'a.description',  'a.images', 'a.adresse', 'a.codepostal', 'a.ville', 'a.date');
+    //     $query = $qb->getQuery();
+    //     return $query->execute();
+    // }
+
     // /**
     //  * @return Annonces[] Returns an array of Annonces objects
     //  */

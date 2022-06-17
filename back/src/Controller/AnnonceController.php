@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annonces;
 use App\Entity\Categories;
 use App\Entity\User;
+use App\Repository\AnnoncesRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class AnnonceController extends AbstractController
 {
@@ -57,11 +61,25 @@ class AnnonceController extends AbstractController
     /**
      * @Route("api/annonces", methods={"GET"})
     */
-    public function getAllAnnonces(ManagerRegistry $mr)
+    public function getAllAnnonces(AnnoncesRepository $repo)
     {
        
-        $findAllAnnonces = $mr->getRepository(Annonces::class)->findAll();
+        $findAllAnnonces = $repo->findAll();
+        
+        $encoder = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers,$encoder);
+        $jsonContent = $serializer->serialize($findAllAnnonces, 'json', [
+            'circular_reference_handler'=> function($object){
+                return $object->getId();
+            }
+        ]);
    
-        return $this->json($findAllAnnonces) ;
+        $response = new Response($jsonContent);
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+       
     }
 }
