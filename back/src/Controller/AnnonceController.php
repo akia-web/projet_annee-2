@@ -6,13 +6,13 @@ use App\Entity\Annonces;
 use App\Entity\Categories;
 use App\Entity\User;
 use DateTime;
-use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 class AnnonceController extends AbstractController
 {
@@ -53,5 +53,15 @@ class AnnonceController extends AbstractController
         return new Response('ok', Response::HTTP_OK);
 
      
+    }
+    /**
+     * @Route("api/annonces", methods={"GET"})
+    */
+    public function getAllAnnonces(ManagerRegistry $mr)
+    {
+       
+        $findAllAnnonces = $mr->getRepository(Annonces::class)->findAll();
+   
+        return $this->json($findAllAnnonces) ;
     }
 }

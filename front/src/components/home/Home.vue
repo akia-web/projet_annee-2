@@ -17,7 +17,7 @@
   </div>
 
   <p>Affiner la liste par : </p>
-  <span>Balades</span> <span>Bien-être</span> <span>Concours</span> <span>Salons</span> <span>Sports</span> 
+  <span>Balades</span> <span>Bien-être</span> <span>Concours</span> <span>Salons</span> <span>Sports</span> <span>Tous</span>
 
 
 
@@ -38,7 +38,8 @@ export default {
     return{
     haveCompte: this.getUser(),
     isConnect: false,
-    recherches : []
+    recherches : [],
+    listTous: [],
     }
   },
    methods:{
@@ -69,7 +70,23 @@ export default {
       ajoutAnnonce(){
         document.location.href = "nouvelle-annonce"
 
+      },
+
+     async getAllAnnonces(){
+        let url = "http://127.0.0.1:8000/api/annonces";
+    
+        await axios.get(url).then((res)=>{
+         this.listTous=res;
+                
+        },
+        (error)=>{
+        
+        })               
+
       }
+   },
+   beforeMount(){
+    this.getAllAnnonces();
    }
 
 }
