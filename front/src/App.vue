@@ -1,44 +1,59 @@
 <template>
-  <Navbar />
- <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
- 
+  <Navbar v-on:connect="getUser($event)" />
+  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 
   <!--  <router-link :to="{name: 'dynamic', params: { id: 33 } }"> page </router-link> -->
 
-    <router-view />
+  <router-view />
 </template>
 
-
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "./components/HelloWorld.vue";
 
-import LalalaMessage from './components/LalalaMessage.vue'
+import LalalaMessage from "./components/LalalaMessage.vue";
 
-import ConnexionApp from './components/connexion/ConnexionApp.vue'
+import ConnexionApp from "./components/connexion/ConnexionApp.vue";
 
-import Navbar from './components/navbar/Navbar.vue'
-
+import Navbar from "./components/navbar/Navbar.vue";
 
 export default {
-  name: 'App',
-  data(){
-    return{
+  name: "App",
+  data() {
+    return {
       Authenticated: false,
+      user: null,
+      id: null,
       email: null,
-      id:null
-    }
+    };
+  },
+  methods: {
+    getUser(event) {
+      console.log(event);
+      // this.email = localStorage.getItem("animoEmail");
+      // this.id = localStorage.getItem("animoId");
+      // let url =
+      //   "http://127.0.0.1:8000/api/user?email=" +
+      //   this.email +
+      //   "&id=" +
+      //   this.id;
+
+      // await axios.get(url).then(
+      //   (res) => {
+      //     console.log(res.data);
+      //   },
+
+      //   (error) => {}
+      // );
+    },
   },
 
   components: {
-     HelloWorld,
-    'lalala': LalalaMessage,
+    HelloWorld,
+    lalala: LalalaMessage,
     ConnexionApp,
-    Navbar
-  }
-}
+    Navbar,
+  },
+};
 </script>
 
-<style src="./css_global/style.css">
-
-</style>
+<style src="./css_global/style.css"></style>

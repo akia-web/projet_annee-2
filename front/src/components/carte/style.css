@@ -1,0 +1,56 @@
+.small {
+  font-size: 15px;
+}
+.description {
+  margin-bottom: 1em;
+}
+.option {
+  cursor: pointer;
+  padding: 3px;
+  transition: 0.2s ease-in-out;
+}
+
+.option:hover {
+  color: #84c476;
+}
+
+.titre {
+  text-align: center;
+}
+img {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+}
+.pin {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.mainAnnonces {
+  display: flex;
+  justify-content: space-between;
+}
+.mainGauche {
+  width: 60%;
+}
+
+span:hover {
+  background-color: #84c476;
+}
+@media (min-width: 1250px) {
+  .menu {
+    flex-direction: row;
+    margin-bottom: 5em;
+  }
+
+  .page {
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  .containerAnnonces {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

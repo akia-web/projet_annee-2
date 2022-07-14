@@ -78,7 +78,7 @@ export default {
             this.messages.push("Le mot de passe est vide");
             password.classList.add("incorrect")  
             
-        }else if(password.value.length< 8){
+        }else if(password.value.length< 5){
             this.messages.push("Le mot de passe trop court"); 
             password.classList.add("incorrect") 
             
@@ -126,9 +126,6 @@ export default {
                 console.log(error)
                 this.messages.push("une erreur s'est produite lors de l'inscription")
             })               
-            
-           
-           
              
         }
 

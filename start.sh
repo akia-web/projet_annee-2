@@ -1,5 +1,5 @@
 #!/bin/sh
-cd back
+cd "back"
 symfony serve & 
-cd ../front
+cd "../front"
 vue serve

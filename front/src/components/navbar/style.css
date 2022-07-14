@@ -1,0 +1,8 @@
+.navbar {
+  border-bottom: 1px solid rgb(233, 232, 232);
+  position: fixed;
+  background-color: white;
+  top: 0;
+  left: 20%;
+  padding: 10px;
+}

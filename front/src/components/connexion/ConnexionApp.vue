@@ -3,6 +3,7 @@
 
    
      <div class="bloc1">
+        
           <h1>Connexion <img src="../../assets/herisson.png" alt=""></h1>
 
             <div v-if=" messagesInvalide[0]">
@@ -40,11 +41,9 @@
           
         </div>
       </div>
-
     </div>
-    <div class="page" v-else>
-      <user-app></user-app>
-    </div>
+   
+   
 </template>
 
 <script>
@@ -52,6 +51,7 @@ import Inscription from '@/components/inscription/Inscription.vue'
 import UserApp from '../user/UserApp.vue'
 import Bouton from '../bouton/Bouton.vue'
 import MessageInvalide from '../messages/messageInvalide/messageInvalide.vue'
+import Profile from '../profile/profile.vue'
 export default {
 
   name: 'ConnexionApp',
@@ -62,12 +62,14 @@ export default {
       id:null,
       emailStorage : localStorage.getItem("animoEmail"),
       animoId : localStorage.getItem("animoId"), 
-      isConnected: false
+      isConnected: false,
+      isAdmin:false
     }
   },
   methods:{
     async register(event){
       event.preventDefault()
+      this.$emit('connect', 'coucou')
       let email = document.querySelector("#emailConnexion")
       let password = document.querySelector("#password2")
       let user = {}
@@ -82,13 +84,23 @@ export default {
               
         console.log(result.data) 
         this.email= result.data.email,
-        this.id = result.data.id  
+        this.id = result.data.id 
+        let role = result.data.role 
+
         localStorage.setItem('animoId',this.id)
         localStorage.setItem('animoEmail', this.email)
+        localStorage.setItem('animoRole', role)
         this.isConnected = true
-        if(this.isConnected){
-          this.$router.push('/');
-        }
+        
+          if(role == 'user'){
+            window.location.href="/"
+          }else if(role == 'admin'){
+            this.$router.push('dashboard');
+          }
+          
+          
+          
+        
       
         
       }catch(e){
@@ -98,13 +110,26 @@ export default {
 
     redirectInscription(){
       this.$router.push('inscription');
+    },
+    redirectInformations(){
+      if(this.emailStorage){
+        this.$router.push('informations');
+      }
+      
     }
+   
+  },
+   beforeMount() {
+    this.redirectInformations();
   },
    components: {
   Inscription,
       UserApp,
       Bouton,
-      MessageInvalide
+      MessageInvalide,
+      Profile,
+      
+  
   }
 }
 </script>

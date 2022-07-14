@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnnoncesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnnoncesRepository::class)]
@@ -41,6 +43,14 @@ class Annonces
 
     #[ORM\Column(type: 'string', length: 255)]
     private $ville;
+
+    #[ORM\OneToMany(mappedBy: 'Annonces', targetEntity: AnnoncesFollow::class, orphanRemoval: true)]
+    private $annoncesFollows;
+
+    public function __construct()
+    {
+        $this->annoncesFollows = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -153,6 +163,36 @@ class Annonces
     public function setVille(string $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AnnoncesFollow>
+     */
+    public function getAnnoncesFollows(): Collection
+    {
+        return $this->annoncesFollows;
+    }
+
+    public function addAnnoncesFollow(AnnoncesFollow $annoncesFollow): self
+    {
+        if (!$this->annoncesFollows->contains($annoncesFollow)) {
+            $this->annoncesFollows[] = $annoncesFollow;
+            $annoncesFollow->setAnnonces($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnoncesFollow(AnnoncesFollow $annoncesFollow): self
+    {
+        if ($this->annoncesFollows->removeElement($annoncesFollow)) {
+            // set the owning side to null (unless already changed)
+            if ($annoncesFollow->getAnnonces() === $this) {
+                $annoncesFollow->setAnnonces(null);
+            }
+        }
 
         return $this;
     }

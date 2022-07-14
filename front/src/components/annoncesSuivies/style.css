@@ -1,0 +1,40 @@
+h1 {
+  text-align: center;
+}
+
+.green {
+  color: #84c476;
+}
+.menuAnnonceFollow {
+  margin-bottom: 2em;
+}
+
+.active {
+  background-color: #84c476;
+  color: white;
+  border-radius: 7px;
+}
+
+.option {
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.containerAnnnonceSuivie {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.containerAnnonces {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+@media (min-width: 1250px) {
+  .containerAnnonces {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

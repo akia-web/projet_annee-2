@@ -29,9 +29,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Annonces::class, orphanRemoval: true)]
     private $annonces;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AnnoncesFollow::class, orphanRemoval: true)]
+    private $annoncesFollows;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $pseudo;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $profilImage;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->annoncesFollows = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,6 +142,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $annonce->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AnnoncesFollow>
+     */
+    public function getAnnoncesFollows(): Collection
+    {
+        return $this->annoncesFollows;
+    }
+
+    public function addAnnoncesFollow(AnnoncesFollow $annoncesFollow): self
+    {
+        if (!$this->annoncesFollows->contains($annoncesFollow)) {
+            $this->annoncesFollows[] = $annoncesFollow;
+            $annoncesFollow->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnoncesFollow(AnnoncesFollow $annoncesFollow): self
+    {
+        if ($this->annoncesFollows->removeElement($annoncesFollow)) {
+            // set the owning side to null (unless already changed)
+            if ($annoncesFollow->getUser() === $this) {
+                $annoncesFollow->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    public function getProfilImage(): ?string
+    {
+        return $this->profilImage;
+    }
+
+    public function setProfilImage(?string $profilImage): self
+    {
+        $this->profilImage = $profilImage;
 
         return $this;
     }

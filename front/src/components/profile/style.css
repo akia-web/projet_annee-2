@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10em;
+}
+.gauche {
+  display: flex;
+  flex-direction: column;
+}
+
+.droite {
+  width: 100%;
+}
+
+.profileUser {
+  margin-top: 5em;
+  width: 100%;
+}
+
+@media (min-width: 1250px) {
+  .container {
+    flex-direction: row;
+    margin-top: 2em;
+  }
+}

@@ -1,12 +1,12 @@
-svg{
-    width: 40px;
-    padding-left:20px ;
-    transition: 0.3s ease-in-out;
+svg {
+  width: 40px;
+  padding-left: 20px;
+  transition: 0.3s ease-in-out;
+  fill: black;
 }
 
-svg:hover{
-    cursor: pointer;
-    fill: #84C476;
-    transform: scale(1.1);
-
+svg:hover {
+  cursor: pointer;
+  fill: #84c476;
+  transform: scale(1.1);
 }

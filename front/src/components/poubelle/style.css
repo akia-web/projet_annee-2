@@ -1,0 +1,18 @@
+svg {
+  width: 25px;
+  padding-left: 20px;
+  transition: 0.3s ease-in-out;
+}
+
+svg:hover {
+  cursor: pointer;
+  fill: #84c476;
+  transform: scale(1.1);
+}
+
+.cls-1 {
+  fill: #ff2400;
+}
+.cls-2 {
+  fill: #ba1d08;
+}

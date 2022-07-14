@@ -1,65 +1,111 @@
-.menu{
-    display: flex;
-    flex-direction: column;
-    justify-content:space-between;
-    align-items: center;
-    margin-top: 5em;
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1em;
 
-    
-    padding-left: 25px;
-   
-}
-.baniere{
-    margin-top: 2em;
-    min-height: 40vh;
-    background-image: url(../../assets/chien5.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size:100%;
-}
-.menuAjout{
-
- display: flex;
- align-items: center;
- border: 1px solid #84C476;
- border-radius: 10px;
- padding: 5px;
- cursor: pointer;
- transition: 0.2s ease-in-out;
-}
-h2{
-    text-align: center;
-    color: black;
-}
-svg{
-    fill: #84C476;
-    margin-right: 10px;
-   
+  padding-left: 25px;
 }
 
-.menuAjout:hover{
-    background-color: rgb(248, 245, 245);
+.page {
+  min-height: 150vh;
+}
+.baniere {
+  margin-top: 10em;
+  min-height: 40vh;
+  background-image: url(../../assets/chien5.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
-span{
-    background-color: lightgray;
-    padding: 7px;
-    border-radius: 10%;
-    cursor: pointer;
-    transition: 0.2s ease-in-out;
-    
+h2 {
+  text-align: center;
+  color: black;
+}
+svg {
+  fill: #84c476;
+  margin-right: 10px;
 }
 
-span:hover{
-    background-color:#84C476;
+.menuCategories {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+  gap: 0.5em;
 }
-@media (min-width: 1250px){
-    .menu{
-        flex-direction: row;
-    }
 
-    .page{
-        width: 70%;
-        margin: 0 auto
-    }
+.menuCategories span {
+  background-color: lightgray;
+  padding: 7px;
+  border-radius: 10%;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.small {
+  font-size: 15px;
+}
+.description {
+  margin-bottom: 1em;
+}
+.containerAnnonces {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.annonces {
+  margin-bottom: 1em;
+  border: 1px solid #84c476;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 7px;
+}
+
+.annonces .titre {
+  text-align: center;
+}
+
+.annonces img {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+}
+.pin {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.mainAnnonces {
+  display: flex;
+  justify-content: space-between;
+}
+.mainGauche {
+  width: 60%;
+}
+
+span:hover {
+  background-color: #84c476;
+}
+@media (min-width: 1250px) {
+  .menu {
+    flex-direction: row;
+    margin-bottom: 5em;
+  }
+
+  .page {
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  .containerAnnonces {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .annonces {
+    width: 45%;
+  }
 }

@@ -1,0 +1,60 @@
+h1 {
+  text-align: center;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+}
+.table {
+  width: 100%;
+  margin-top: 2em;
+}
+
+.tbody {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #84c476;
+}
+
+img {
+  width: 100px;
+  object-fit: contain;
+}
+
+.tbody div {
+  width: 20%;
+}
+
+.menuAjout {
+  display: flex;
+  align-items: center;
+  border: 1px solid #84c476;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  width: 80%;
+  margin: 0 auto;
+}
+.menuAjout:hover {
+  background-color: rgb(248, 245, 245);
+}
+
+.lienAnnonce {
+  color: black;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.image {
+  border-radius: 7px;
+}
+
+@media (min-width: 1250px) {
+  .menuAjout {
+    width: 30%;
+    justify-content: space-between;
+  }
+}
