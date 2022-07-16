@@ -37,6 +37,7 @@ class SecurityController extends AbstractController
         $user->setEmail($makeUser->{'email'});
         $user->setPassword($hashPassword);
         $user->setRoles(["user"]);
+        $user->setPseudo('anonyme');
 
         $manager->persist($user);
         $manager->flush();
@@ -176,6 +177,30 @@ class SecurityController extends AbstractController
         return new Response('ok', Response::HTTP_OK);
     }
 
+    // /**
+    //  * @Route("api/updateAvatar/{id}", methods={"PUT"})
+    //  */
+    // public function updateAvatar(ManagerRegistry $mr, HttpFoundationRequest $request, int $id){
+    //     $manager = $mr->getManager();
+    //     $image = json_decode($request->getContent());
+    //     $fichier = md5(uniqid()).'.'.$image->guessExtension();
+
+    //      // On copie le fichier dans le dossier uploads
+    //      $image->move(
+    //         $this->getParameter('images_directory'),
+    //         $fichier
+    //     );
+        
+    //     // On crée l'image dans la base de données
+      
+    
+    //     $user = $mr->getRepository(User::class)->find($id);
+    //     $user->set
+   
+    //     $manager->persist($user);
+    //     $manager->flush();
+    //     return new Response('ok', Response::HTTP_OK);
+    // }
 
 
 }
