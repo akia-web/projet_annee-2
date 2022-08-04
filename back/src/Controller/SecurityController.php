@@ -177,30 +177,31 @@ class SecurityController extends AbstractController
         return new Response('ok', Response::HTTP_OK);
     }
 
-    // /**
-    //  * @Route("api/updateAvatar/{id}", methods={"PUT"})
-    //  */
-    // public function updateAvatar(ManagerRegistry $mr, HttpFoundationRequest $request, int $id){
-    //     $manager = $mr->getManager();
-    //     $image = json_decode($request->getContent());
-    //     $fichier = md5(uniqid()).'.'.$image->guessExtension();
+    /**
+     * @Route("api/updateAvatar/{id}", methods={"POST"})
+     */
+    public function updateAvatar(ManagerRegistry $mr, HttpFoundationRequest $request, int $id){
+        $image = $request->files->get("image");
+        $manager = $mr->getManager();
+      
+        $fichier = md5(uniqid()).'.'.$image->guessExtension();
 
-    //      // On copie le fichier dans le dossier uploads
-    //      $image->move(
-    //         $this->getParameter('images_directory'),
-    //         $fichier
-    //     );
+         // On copie le fichier dans le dossier uploads
+         $image->move(
+            $this->getParameter('images_directory'),
+           $fichier
+        );
         
-    //     // On crée l'image dans la base de données
+        // // On crée l'image dans la base de données
       
     
-    //     $user = $mr->getRepository(User::class)->find($id);
-    //     $user->set
+        $user = $mr->getRepository(User::class)->find($id);
+        $user->setProfilImage($fichier);
    
-    //     $manager->persist($user);
-    //     $manager->flush();
-    //     return new Response('ok', Response::HTTP_OK);
-    // }
+        $manager->persist($user);
+        $manager->flush();
+        return new Response($fichier, Response::HTTP_OK);
+    }
 
 
 }

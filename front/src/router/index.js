@@ -8,6 +8,7 @@ import Profile from "@/components/profile/profile.vue";
 import AnnoncesModif from "@/components/annoncesModif/AnnoncesModif.vue";
 import DetailAnnonce from "@/components/detailAnnonce/detailAnnonce.vue";
 import Dashboard from "@/components/dashboard/dashboard.vue";
+import gestionCategories from "@/components/gestionCategories/GestionCategories.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -42,6 +43,11 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
+    },
+    {
+      path: "/categories",
+      name: "categories",
+      component: gestionCategories,
     },
 
     // routes dynamique

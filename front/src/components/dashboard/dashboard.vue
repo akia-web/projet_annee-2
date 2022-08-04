@@ -1,7 +1,15 @@
 <template>
   <div>
     <h1>Dashboard</h1>
-    <bouton :message="'deconnexion'" @click="deconnexion"></bouton>
+    <bouton
+      v-if="role != 'admin'"
+      :message="'deconnexion'"
+      @click="deconnexion"
+    ></bouton>
+    <div v-if="role == 'admin'">
+      <button @click="categorieGestions">Gerer les catégories</button>
+      <button>Créer une nouvelle annonce</button>
+    </div>
     <div class="table" v-if="apparait">
       <div class="tbody" v-for="item in resultAnnonces">
         <div>
@@ -40,6 +48,7 @@ export default {
     return {
       resultAnnonces: null,
       apparait: false,
+      role: localStorage.getItem("animoRole"),
     };
   },
   methods: {
@@ -97,6 +106,9 @@ export default {
       setTimeout(function () {
         tableau.splice(index, 1);
       }, 50);
+    },
+    categorieGestions() {
+      this.$router.push("/categories");
     },
   },
   beforeMount() {

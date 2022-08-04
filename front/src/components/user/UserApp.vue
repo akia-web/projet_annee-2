@@ -20,13 +20,7 @@
         alt=""
       />
 
-      <img
-        v-if="image != null"
-        class="user2"
-        :src="getFileImage(fileImage)"
-        @load="loadFileImage(fileImage)"
-        alt=""
-      />
+      <img v-if="image != null" class="user2" :src="image" alt="" />
       <span class="phraseLogoImage" @click="changeModifyImage"
         >Modifier la photo de profile</span
       >
@@ -164,6 +158,7 @@ export default {
       fileImage: [],
       photoName: null,
       wantToModifyImage: false,
+      selectedFile: null,
     };
   },
   methods: {
@@ -273,7 +268,7 @@ export default {
       axios.get(url).then(
         (res) => {
           this.pseudo = res.data.pseudo;
-          this.image = res.data.image;
+          this.image = "http://localhost:8000/uploads/" + res.data.image;
         },
         (error) => {
           console.log(error);
@@ -293,6 +288,7 @@ export default {
     dropImage(e) {
       e.preventDefault();
       const inputValue = e.target.files || e.dataTransfer.files;
+
       for (let i = 0; i < inputValue.length; i++) {
         this.fileImage = inputValue[i];
         console.log(inputValue[i]);
@@ -312,10 +308,17 @@ export default {
       container.style.borderColor = "#84c476";
       logo.style.fill = "#84c476";
     },
-    validerImage() {
-      this.image = this.photoName;
+    async validerImage() {
+      // this.image = this.photoName;
       this.wantToModifyImage = false;
       this.photoName = null;
+      let url = "http://127.0.0.1:8000/api/updateAvatar/" + this.id;
+      const fd = new FormData();
+      fd.append("image", this.fileImage);
+
+      await axios.post(url, fd).then((res) => {
+        this.image = "http://localhost:8000/uploads/" + res.data;
+      });
     },
     annulerImage() {
       this.wantToModifyImage = false;

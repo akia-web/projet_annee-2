@@ -52,22 +52,22 @@ class AnnoncesRepository extends ServiceEntityRepository
     //     return $query->execute();
     // }
 
-    // /**
-    //  * @return Annonces[] Returns an array of Annonces objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    //  /**
+    //   * @return Annonces[] Returns an array of Annonces objects
+    //   */
+    
+    // public function findByExampleField($value)
+    // {
+    //     return $this->createQueryBuilder('a')
+    //         ->andWhere('a.exampleField = :val')
+    //         ->setParameter('val', $value)
+    //         ->orderBy('a.id', 'ASC')
+    //         ->setMaxResults(10)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+    
 
     /*
     public function findOneBySomeField($value): ?Annonces
@@ -80,4 +80,43 @@ class AnnoncesRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @return Annonces[] Returns an array of Annonces objects
+    */
+    
+    public function findByDateAfterNow($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.date > :val')
+            ->setParameter('val', $value)
+            ->orderBy('a.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByDateBeforeNow($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.date < :val')
+            ->setParameter('val', $value)
+            ->orderBy('a.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByDateAfterNowAndCategorie($date, $categorie)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.date > :date')
+            ->andWhere('a.categorie = :valCategorie')
+            ->setParameter('date', $date)
+            ->setParameter(':valCategorie', $categorie)
+            // ->orderBy('a.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

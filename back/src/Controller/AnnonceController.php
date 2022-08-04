@@ -6,6 +6,7 @@ use App\Entity\Annonces;
 use App\Entity\Categories;
 use App\Entity\User;
 use App\Repository\AnnoncesRepository;
+use App\Service\AnnoncesService;
 use App\Service\EncoderService;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
@@ -83,6 +84,16 @@ class AnnonceController extends AbstractController
        
     }
 
+    /**
+     * @Route("api/annonces/now", methods={"GET"})
+    */
+    public function getAllAnnoncesAfterCurrentDate(AnnoncesRepository $repo, AnnoncesService $annoncesService){
+        $findAllAnnonces = $repo->findByDateAfterNow(date("Y-m-d H:i:s"));
+        $result = $annoncesService->getAnnonces($findAllAnnonces);
+       
+        return new Response(json_encode($result), Response::HTTP_ACCEPTED);
+    }
+
 
     /**
      * @Route("api/Allannonces", methods={"GET"})
@@ -117,12 +128,11 @@ class AnnonceController extends AbstractController
      * @Route("api/annonces/{idCategorie}", methods={"GET"})
     */
 
-    public function getAnnoncesByName(AnnoncesRepository $repo, string $idCategorie, EncoderService $encode){
-        $findAnnonce = $repo->findBy(array('categorie' => $idCategorie));
-        $encodeJson = $encode->encode($findAnnonce);
-        $response = new Response($encodeJson);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+    public function getAnnoncesByName(AnnoncesRepository $repo, string $idCategorie, AnnoncesService $annoncesService){
+       
+        $findAllAnnonces = $repo->findByDateAfterNowAndCategorie(date("Y-m-d H:i:s"), $idCategorie);
+        $result = $annoncesService->getAnnonces($findAllAnnonces);
+        return new Response(json_encode($result)) ;
     }
 
     

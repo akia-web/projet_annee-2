@@ -27,7 +27,11 @@
 
           <div class="mainAnnonces">
             <div class="mainGauche">
-              <p class="small">{{ item.user.email }}</p>
+              <div class="avatar">
+                <img :src="item.avatar" alt="" />
+                <p class="small">{{ item.pseudo }}</p>
+              </div>
+
               <p class="description small">
                 <b> Description </b>:
                 <br />
@@ -45,8 +49,8 @@
               <p class="small">
                 <img class="pin" src="../../assets/calendrier.jpg" alt="" />
                 <br />
-                Le {{ item.date.date }} <br />
-                {{ item.date.heure }}
+                Le {{ item.date }} <br />
+                {{ item.minute }}
               </p>
             </div>
           </div>
@@ -82,26 +86,16 @@ export default {
   },
   methods: {
     async getAllAnnonces() {
-      let url = "http://127.0.0.1:8000/api/annonces";
+      let url = "http://127.0.0.1:8000/api/annonces/now";
 
       await axios.get(url).then(
         (res) => {
+          console.log(res.data);
           this.resultAnnonces = [];
           let result = res.data;
           this.affiche = true;
 
           for (let i = 0; i < result.length; i++) {
-            var date = new Date(result[i].date.timestamp * 1000);
-            result[i].date.date =
-              date.getDate() +
-              "/" +
-              (date.getMonth() + 1) +
-              "/" +
-              date.getFullYear();
-
-            result[i].date.heure =
-              " à " + date.getHours() + " h " + date.getMinutes();
-
             if (result[i].description.length < 50) {
               result[i].descriptionTronque = result[i].description;
             } else {
@@ -133,18 +127,19 @@ export default {
         (res) => {
           this.resultAnnonces = [];
           let result = res.data;
+          console.log(res.data);
 
           for (let i = 0; i < result.length; i++) {
-            var date = new Date(result[i].date.timestamp * 1000);
-            result[i].date.date =
-              date.getDate() +
-              "/" +
-              (date.getMonth() + 1) +
-              "/" +
-              date.getFullYear();
+            // var date = new Date(result[i].date.timestamp * 1000);
+            // result[i].date.date =
+            //   date.getDate() +
+            //   "/" +
+            //   (date.getMonth() + 1) +
+            //   "/" +
+            //   date.getFullYear();
 
-            result[i].date.heure =
-              " à " + date.getHours() + " h " + date.getMinutes();
+            // result[i].date.heure =
+            //   " à " + date.getHours() + " h " + date.getMinutes();
 
             if (result[i].description.length < 50) {
               result[i].descriptionTronque = result[i].description;
