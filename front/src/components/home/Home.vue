@@ -12,18 +12,21 @@
       <p>Affiner la liste par :</p>
       <div class="menuCategories">
         <span
+          @click="getAllAnnonces"
+          v-bind:class="{ active: categorie == 'toutes' }"
+        >
+          Tous
+          <img class="imgCategorie" src="../../assets/tous.png" />
+        </span>
+        <span
           v-for="item in categories"
           @click="findAnnonceByCategorieName(item.id)"
+          v-bind:class="{ active: categorie == item.name }"
           >{{ item.name }}
           <img
             class="imgCategorie"
             :src="require(`@/assets/${item.name}.png`)"
           />
-        </span>
-
-        <span @click="getAllAnnonces">
-          Tous
-          <img class="imgCategorie" :src="require(`@/assets/tous.png`)" />
         </span>
       </div>
 
@@ -44,9 +47,9 @@
 
           <div class="mainAnnonces">
             <div class="mainGauche">
-              <div class="avatar">
+              <div class="avatar" @click="seeAuthor(item.authorId)">
                 <img :src="item.avatar" alt="" />
-                <p class="small" @click="seeAuthor(item.authorId)">
+                <p class="small">
                   {{ item.pseudo }}
                 </p>
               </div>
@@ -101,10 +104,12 @@ export default {
       resultAnnonces: [],
       categories: [],
       affiche: false,
+      categorie: "toutes",
     };
   },
   methods: {
     async getAllAnnonces() {
+      this.categorie = "toutes";
       let url = "http://127.0.0.1:8000/api/annonces/now";
 
       await axios.get(url).then(
@@ -157,6 +162,7 @@ export default {
             }
           }
           this.resultAnnonces = result;
+          this.categorie = result[0].categorie.name;
         },
         (error) => {}
       );

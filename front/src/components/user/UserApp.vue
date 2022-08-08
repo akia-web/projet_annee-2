@@ -133,7 +133,8 @@ import Bouton from "../bouton/Bouton.vue";
 import MessageInvalide from "../messages/messageInvalide/messageInvalide.vue";
 import Plume from "../plume/plume.vue";
 import { getFileImage, loadFileImage } from "../../utils.js";
-import { bus } from "../../main.js";
+import {bus} from "../../main"
+
 export default {
   name: "UserApp",
   setup() {
@@ -318,7 +319,8 @@ export default {
 
       await axios.post(url, fd).then((res) => {
         this.image = "http://localhost:8000/uploads/" + res.data;
-        // bus.$emit("update-image", this.image);
+        bus.emit("update-image", this.image);
+        
       });
     },
     annulerImage() {

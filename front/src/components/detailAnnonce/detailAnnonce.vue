@@ -8,7 +8,7 @@
       </p>
       <h2>{{ annonce.name }}</h2>
       <div class="entete">
-        <div>
+        <div class="mainGauche">
           <div class="avatar">
             <img :src="annonce.avatar" alt="" />
             <p class="small">{{ annonce.pseudo }}</p>
