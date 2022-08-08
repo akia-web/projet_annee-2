@@ -6,6 +6,7 @@ use App\Entity\Annonces;
 use App\Entity\AnnoncesFollow;
 use App\Entity\User;
 use App\Repository\AnnoncesFollowRepository;
+use App\Service\AnnoncesService;
 use App\Service\EncoderService;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
@@ -109,9 +110,10 @@ class FollowAnnonceController extends AbstractController
     /**
      * @Route("api/allFollowAnnonceByUser/{userId}", methods={"GET"})
     */
-    public function getAllFollowAnnonceByUser(AnnoncesFollowRepository $repo, int $userId, EncoderService $encode){
+    public function getAllFollowAnnonceByUser(AnnoncesFollowRepository $repo, int $userId, AnnoncesService $annonceService){
         $findAnnonceFollow = $repo->findBy(array('user' => $userId));
-        $tableau = [];
+        $annoncesEnCours = [];
+        $annoncesPassees=[];
        
        
 
@@ -121,15 +123,30 @@ class FollowAnnonceController extends AbstractController
             $annonce->{'id'}= $findAnnonceFollow[$i]->getAnnonces()->getId();
             $annonce->{'name'}= $findAnnonceFollow[$i]->getAnnonces()->getName();
             $annonce->{'images'}= $findAnnonceFollow[$i]->getAnnonces()->getImages();
-            $annonce->{'description'}= $findAnnonceFollow[$i]->getAnnonces()->getDescription();
+            $annonce->{'description'}= $annonceService->tronquer($findAnnonceFollow[$i]->getAnnonces()->getDescription());
             $annonce->{'adresse'}= $findAnnonceFollow[$i]->getAnnonces()->getAdresse();
             $annonce->{'ville'}= $findAnnonceFollow[$i]->getAnnonces()->getVille();
             $annonce->{'codepostal'}= $findAnnonceFollow[$i]->getAnnonces()->getCodepostal();
-            $annonce->{'date'}= $findAnnonceFollow[$i]->getAnnonces()->getDate();
-            array_push($tableau,$annonce);
+            $annonce->{'date'}= $findAnnonceFollow[$i]->getAnnonces()->getDate()->format("d-m-Y");
+            $annonce->{'dateFr'} =$annonceService->getDateFr($findAnnonceFollow[$i]->getAnnonces()->getDate()) ;
+            $annonce->{'minute'} =$annonceService->getHours($findAnnonceFollow[$i]->getAnnonces()->getDate()) ;
+            $annonce->avatar="http://localhost:8000/uploads/".$findAnnonceFollow[$i]->getAnnonces()->getUser()->getProfilImage();;
+            $annonce->pseudo= $findAnnonceFollow[$i]->getAnnonces()->getUser()->getPseudo();
+            $date = strtotime($annonce->{'date'});
+            $dateNow = strtotime(date("d-m-Y"));
+
+            if($date > $dateNow){
+                array_push($annoncesEnCours, $annonce);
+            }else{
+                array_push($annoncesPassees, $annonce);
+            }
+            
         }
+        $result = new stdClass();
+        $result->actuelles = $annoncesEnCours;
+        $result->passees= $annoncesPassees;
         
-        return new Response(json_encode($tableau));
+        return new Response(json_encode($result, Response::HTTP_OK));
 
     }
 }

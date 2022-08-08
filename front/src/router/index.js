@@ -9,6 +9,7 @@ import AnnoncesModif from "@/components/annoncesModif/AnnoncesModif.vue";
 import DetailAnnonce from "@/components/detailAnnonce/detailAnnonce.vue";
 import Dashboard from "@/components/dashboard/dashboard.vue";
 import gestionCategories from "@/components/gestionCategories/GestionCategories.vue";
+import infoAuthor from "@/components/infoAuthor/infoAuthor.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -62,6 +63,12 @@ const router = createRouter({
       name: "getAnnonce", // <- le nom du chemin
       path: "/annonce/:id", //<- le mot dans l'url + le paramètre avec les ":" devant le paramettre
       component: DetailAnnonce, // le nom du composant appelé
+    },
+    {
+      name: "getAuthor", // <- le nom du chemin
+      path: "/author", //<- le mot dans l'url + le paramètre avec les ":" devant le paramettre
+      component: infoAuthor, // le nom du composant appelé
+      props: true,
     },
   ],
 });

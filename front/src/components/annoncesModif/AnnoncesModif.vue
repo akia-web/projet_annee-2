@@ -135,17 +135,17 @@ export default {
       await axios.get(url).then(
         (res) => {
           this.annonce = res.data;
-          var date = new Date(res.data[0].date.timestamp * 1000).toISOString();
+          var date = new Date(res.data.timestamp * 1000).toISOString();
           let blabla = date.slice(0, 16);
           console.log(date);
           this.date = blabla;
-          this.titre = res.data[0].name;
-          this.categorie = res.data[0].categorie.name;
-          this.description = res.data[0].description;
-          this.imgSelected = res.data[0].images;
-          this.adresse = res.data[0].adresse;
-          this.ville = res.data[0].ville;
-          this.codePostal = res.data[0].codepostal;
+          this.titre = res.data.name;
+          this.categorie = res.data.categorie.name;
+          this.description = res.data.description;
+          this.imgSelected = res.data.images;
+          this.adresse = res.data.adresse;
+          this.ville = res.data.ville;
+          this.codePostal = res.data.codePostal;
           this.lienCarte =
             "https://www.google.com/maps?q=" +
             this.adresse +

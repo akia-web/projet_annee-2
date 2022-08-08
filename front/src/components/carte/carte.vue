@@ -5,10 +5,14 @@
 
     <div class="mainAnnonces">
       <div class="mainGauche">
+        <div class="avatar">
+          <img :src="item.avatar" alt="" />
+          <p class="small">{{ item.pseudo }}</p>
+        </div>
         <p class="description small">
           <b> Description </b>:
           <br />
-          {{ item.descriptionTronque }}
+          {{ item.description }}
         </p>
         <p class="small">
           <img class="pin" src="../../assets/pin.jpg" alt="" /> <br />
@@ -22,8 +26,8 @@
         <p class="small">
           <img class="pin" src="../../assets/calendrier.jpg" alt="" />
           <br />
-          Le {{ item.date.dates }} <br />
-          {{ item.date.heure }}
+          Le {{ item.dateFr }} <br />
+          {{ item.minute }}
         </p>
       </div>
     </div>

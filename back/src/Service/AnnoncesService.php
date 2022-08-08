@@ -83,7 +83,7 @@ class AnnoncesService{
             $annonce->minute = AnnoncesService::getHours($annonces[$i]->getDate()); 
             $annonce->pseudo = $annonces[$i]->getUser()->getPseudo();
             $annonce->avatar = "http://localhost:8000/uploads/".$annonces[$i]->getUser()->getProfilImage();
-           
+            $annonce->authorId= $annonces[$i]->getUser()->getId();
             $categorie = new stdClass;
             $categorie->id = $annonces[$i]->getCategorie()->getId();
             $categorie->name = $annonces[$i]->getCategorie()->getName();
@@ -94,4 +94,37 @@ class AnnoncesService{
         }
         return $result;
     }
+
+    public function getOneAnnonce($item){
+        $annonce = new stdClass();
+        $annonce->id = $item->getId();
+        $annonce->name = $item->getName();
+        $annonce->description = $item->getDescription();
+        $annonce->adresse = $item->getAdresse();
+        $annonce->codePostal = $item->getCodepostal();
+        $annonce->ville = $item->getVille();
+        $annonce->images = $item->getImages();
+        $annonce->date = AnnoncesService::getDateFr($item->getDate());
+        $annonce->minute = AnnoncesService::getHours($item->getDate()); 
+        $annonce->pseudo = $item->getUser()->getPseudo();
+        $annonce->avatar = "http://localhost:8000/uploads/".$item->getUser()->getProfilImage();
+        $annonce->authorEmail = $item->getUser()->getEmail();
+        $annonce->authorId= $item->getUser()->getId();
+        $categorie = new stdClass;
+        $categorie->id = $item->getCategorie()->getId();
+        $categorie->name = $item->getCategorie()->getName();
+        $annonce->categorie = $categorie;
+      
+        return $annonce;
+    }
+    public function tronquer($text){
+        $max = 40;  
+
+        if (strlen($text) >= $max) {
+          $text = substr($text, 0, $max)."...";  
+          
+        }
+        return $text;
+    }
+   
 }

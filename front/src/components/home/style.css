@@ -38,10 +38,15 @@ svg {
 
 .menuCategories span {
   background-color: lightgray;
-  padding: 7px;
+  padding: 7px 2px 7px 7px;
   border-radius: 10%;
   cursor: pointer;
   transition: 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+.menuCategories span img {
+  margin-left: 10px;
 }
 
 .small {
@@ -68,7 +73,7 @@ svg {
   text-align: center;
 }
 
-.annonces img {
+.annonces img:not(.imgCategorie, .avatar img) {
   width: 100%;
   height: 30vh;
   object-fit: cover;
@@ -96,6 +101,18 @@ svg {
   border-radius: 50%;
   object-fit: cover;
 }
+
+.containerTitre {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.imgCategorie {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
 span:hover {
   background-color: #84c476;
 }
@@ -116,6 +133,6 @@ span:hover {
   }
 
   .annonces {
-    width: 45%;
+    width: 48%;
   }
 }

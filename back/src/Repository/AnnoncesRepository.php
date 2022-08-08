@@ -114,7 +114,20 @@ class AnnoncesRepository extends ServiceEntityRepository
             ->andWhere('a.categorie = :valCategorie')
             ->setParameter('date', $date)
             ->setParameter(':valCategorie', $categorie)
-            // ->orderBy('a.date', 'ASC')
+            ->orderBy('a.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByDateAfterNowAndAuthor($date, $authorId)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.date > :date')
+            ->andWhere('a.user = :authorId')
+            ->setParameter('date', $date)
+            ->setParameter('authorId', $authorId)
+            ->orderBy('a.date', 'ASC')
             ->getQuery()
             ->getResult()
         ;

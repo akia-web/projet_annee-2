@@ -1,0 +1,32 @@
+.page {
+  margin-top: 10em;
+}
+
+.entete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.entete img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.containerAnnonces {
+  display: flex;
+  justify-content: space-between;
+}
+.annonce {
+  width: 45%;
+  border: 1px solid #84c476;
+  border-radius: 7px;
+  padding: 10px;
+}
+
+.annonce img {
+  width: 100%;
+}

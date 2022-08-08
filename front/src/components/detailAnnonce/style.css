@@ -21,10 +21,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.entete h2 {
-  width: 50%;
+  /* background-color: rgb(241, 240, 240); */
 }
 
 .entete .participer {
@@ -36,11 +33,12 @@
   margin-top: 6em;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 iframe {
-  width: 60%;
+  width: 50%;
+  height: 40vh;
 }
 
 .participer {
@@ -50,4 +48,37 @@ iframe {
 
 .description {
   font-style: italic;
+}
+
+.picto {
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+}
+
+h2 {
+  text-align: center;
+}
+.warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  padding: 10px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+}
+.avatar img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 50%;
+  object-fit: cover;
 }

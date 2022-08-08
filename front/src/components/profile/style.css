@@ -20,6 +20,6 @@
 @media (min-width: 1250px) {
   .container {
     flex-direction: row;
-    margin-top: 2em;
+    margin-top: 10em;
   }
 }

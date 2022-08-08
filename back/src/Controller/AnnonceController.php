@@ -140,12 +140,38 @@ class AnnonceController extends AbstractController
      * @Route("api/annoncesByUser/{idUser}", methods={"GET"})
     */
 
-    public function getAnnoncesByUser(AnnoncesRepository $repo, string $idUser, EncoderService $encode){
+    public function getAnnoncesByUser(AnnoncesRepository $repo, string $idUser){
         $findAnnonce = $repo->findBy(array('user' => $idUser));
-        $encodeJson = $encode->encode($findAnnonce);
-        $response = new Response($encodeJson);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        $annonces = [];
+        for($i =0; $i < count($findAnnonce); $i++){
+           $annonce = new stdClass();
+           $annonce->id = $findAnnonce[$i]->getId();
+           $annonce->name = $findAnnonce[$i]->getName();
+           $annonce->date = $findAnnonce[$i]->getDate()->format("d-m-Y");
+           $annonce->images = $findAnnonce[$i]->getImages();
+           array_push($annonces, $annonce);
+        }
+
+
+        $annoncesEnCours = [];
+        $annoncesPassees = [];
+        for($i =0; $i < count($annonces); $i++){
+            $date = strtotime($annonces[$i]->{'date'});
+            // dd($date);
+            $dateNow = strtotime(date("d-m-Y"));
+            // dd($dateNow);
+            if($date > $dateNow){
+                array_push($annoncesEnCours, $annonces[$i]);
+            }else{
+                array_push($annoncesPassees, $annonces[$i]);
+            }
+        }
+
+        $result = new stdClass();
+        $result->actuelles = $annoncesEnCours;
+        $result->passees= $annoncesPassees;
+
+        return new Response(json_encode($result), Response::HTTP_OK);
     }
 
 
@@ -167,12 +193,18 @@ class AnnonceController extends AbstractController
      * @Route("api/annoncesById/{annonceId}", methods={"GET"})
     */
 
-    public function getAnnoncesById(AnnoncesRepository $repo, string $annonceId, EncoderService $encode){
+    public function getAnnoncesById(AnnoncesRepository $repo, string $annonceId, AnnoncesService $annoncesService){
         $findAnnonce = $repo->findBy(array('id' => $annonceId));
-        $encodeJson = $encode->encode($findAnnonce);
-        $response = new Response($encodeJson);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        $annonce = $annoncesService->getOneAnnonce($findAnnonce[0]);
+        $dateAnnonce = strtotime($findAnnonce[0]->getDate()->format("d-m-Y"));
+        $dateNow = strtotime(date("d-m-Y"));
+        $annonce->timestamp = $dateAnnonce;
+        if($dateAnnonce > $dateNow){
+           $annonce->isActual = true;
+        }else{
+            $annonce->isActual = false;
+        }
+        return new Response(json_encode($annonce), Response::HTTP_OK);
     }
 
      /**
@@ -213,4 +245,35 @@ class AnnonceController extends AbstractController
 
      
     }
+
+    /**
+     * @Route("api/seeAnnoncesByUser/{authorId}", methods={"GET"})
+     */
+    public function getCurrentAnnoncesByUser(AnnoncesRepository $repoAnnonce, int $authorId){
+        $findAnnonces = $repoAnnonce->findBy(array('user' => $authorId));
+        $info = new stdClass();
+        $info->id = $findAnnonces[0]->getUser()->getId();
+        $info->pseudo = $findAnnonces[0]->getUser()->getPseudo();
+        $info->profilImage = "http://localhost:8000/uploads/".$findAnnonces[0]->getUser()->getProfilImage();
+        $info->totalAnnonces = count($findAnnonces);
+        $annonces = [];
+
+        for($i = 0; $i < count($findAnnonces); $i++){
+            $dateAnnonce = strtotime($findAnnonces[$i]->getDate()->format("d-m-Y"));
+            $dateNow = strtotime(date("d-m-Y"));
+            if($dateAnnonce > $dateNow){
+                $annonce = new stdClass();
+                $annonce->id = $findAnnonces[$i]->getId();
+                $annonce->name = $findAnnonces[$i]->getName();
+                $annonce->images = $findAnnonces[$i]->getImages();
+                $annonce->date = $findAnnonces[$i]->getDate()->format("d-m-Y");
+               array_push($annonces, $annonce);
+             }
+     
+        }
+        $info->annonces = $annonces;     
+        
+        return new Response(json_encode($info, Response::HTTP_OK));
+    }
+  
 }

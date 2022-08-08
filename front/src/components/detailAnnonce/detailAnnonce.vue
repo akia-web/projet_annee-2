@@ -2,23 +2,43 @@
   <div class="page">
     <div class="annonce" v-if="affiche">
       <message-invalide :tableau="message"></message-invalide>
-      <img class="imgAnnonce" :src="image" alt="" />
-
+      <img class="imgAnnonce" :src="annonce.images" alt="" />
+      <p class="warning" v-if="!annonce.isActual">
+        /!\ Cet événement n'est plus d'actualité.
+      </p>
+      <h2>{{ annonce.name }}</h2>
       <div class="entete">
-        <h2>{{ titre }}</h2>
-        <p>Le {{ date }} {{ heure }}</p>
+        <div>
+          <div class="avatar">
+            <img :src="annonce.avatar" alt="" />
+            <p class="small">{{ annonce.pseudo }}</p>
+          </div>
+          <span><b>catégorie :</b></span>
+          <span>{{ annonce.categorie.name }}</span>
+          <p class="description">{{ annonce.description }}</p>
+        </div>
+
+        <div class="containerDate">
+          <div class="date">
+            <img class="picto" src="../../assets/calendrier.jpg" alt="" />
+            <p>{{ annonce.date }}</p>
+          </div>
+
+          <div class="date">
+            <img class="picto" src="../../assets/horloge.png" alt="" />
+            <p>{{ annonce.minute }}</p>
+          </div>
+        </div>
       </div>
-      <span><b>catégorie :</b></span> <span>{{ categorie }}</span>
-      <p class="description">{{ description }}</p>
 
       <div class="adresse">
         <div>
           <h3>Le lieu du rendez-vous</h3>
 
           <p>
-            {{ adresse }} <br />
-            {{ codePostal }} <br />
-            {{ ville }}
+            {{ annonce.adresse }} <br />
+            {{ annonce.codePostal }} <br />
+            {{ annonce.ville }}
           </p>
         </div>
 
@@ -30,29 +50,31 @@
       </div>
 
       <div v-if="isConnect">
-        <div v-if="myAnnonce">
-          <bouton
-            class="participer"
-            :message="'Modifier mon annonce'"
-            @click="modifAnnonce"
-            v-if="!participe"
-          ></bouton>
-        </div>
+        <div v-if="annonce.isActual">
+          <div v-if="myAnnonce">
+            <bouton
+              class="participer"
+              :message="'Modifier mon annonce'"
+              @click="modifAnnonce"
+              v-if="!participe"
+            ></bouton>
+          </div>
 
-        <div v-else-if="!myAnnonce">
-          <bouton
-            class="participer"
-            :message="'Participer à l\'évenement'"
-            @click="participer"
-            v-if="!participe"
-          ></bouton>
+          <div v-else-if="!myAnnonce">
+            <bouton
+              class="participer"
+              :message="'Participer à l\'évenement'"
+              @click="participer"
+              v-if="!participe"
+            ></bouton>
 
-          <bouton
-            class="participer"
-            :message="'Ne plus participer'"
-            @click="nePlusParticiper(idAnnonce)"
-            v-if="participe"
-          ></bouton>
+            <bouton
+              class="participer"
+              :message="'Ne plus participer'"
+              @click="nePlusParticiper(annonce.id)"
+              v-if="participe"
+            ></bouton>
+          </div>
         </div>
       </div>
     </div>
@@ -74,14 +96,6 @@ export default {
     return {
       affiche: false,
       message: [],
-      titre: null,
-      image: null,
-      description: null,
-      date: null,
-      heure: null,
-      adresse: null,
-      codePostal: null,
-      ville: null,
       lienCarte: null,
       email: localStorage.getItem("animoEmail"),
       userId: localStorage.getItem("animoId"),
@@ -89,6 +103,7 @@ export default {
       participe: null,
       myAnnonce: null,
       isConnect: false,
+      annonce: null,
     };
   },
   methods: {
@@ -108,37 +123,17 @@ export default {
         (res) => {
           console.log(res.data);
           this.annonce = res.data;
-          var date = new Date(res.data[0].date.timestamp * 1000);
 
-          this.date =
-            date.getDate() +
-            " " +
-            this.getMonth(date.getMonth() + 1) +
-            " " +
-            date.getFullYear();
-
-          this.heure = " à " + date.getHours() + " h " + date.getMinutes();
-          this.titre = res.data[0].name;
-          this.categorie = res.data[0].categorie.name;
-          this.description = res.data[0].description;
-          this.image = res.data[0].images;
-          this.adresse = res.data[0].adresse;
-          this.ville = res.data[0].ville;
-          this.codePostal = res.data[0].codepostal;
           this.lienCarte =
             "https://www.google.com/maps?q=" +
-            this.adresse +
+            this.annonce.adresse +
             "," +
-            this.codePostal +
-            this.ville +
+            this.annonce.codePostal +
+            this.annonce.ville +
             "&output=embed";
-          this.idAnnonce = id;
           this.affiche = true;
 
-          if (
-            res.data[0].user.email == this.email &&
-            res.data[0].user.id == this.userId
-          ) {
+          if (res.data.authorEmail == this.email) {
             this.myAnnonce = true;
           } else {
             this.myAnnonce = false;
@@ -165,45 +160,6 @@ export default {
       );
     },
 
-    getMonth(month) {
-      switch (month) {
-        case 1:
-          return "janvier";
-
-        case 2:
-          return "fevrier";
-
-        case 3:
-          return "mars";
-
-        case 4:
-          return "avril";
-
-        case 5:
-          return "mai";
-
-        case 6:
-          return "juin";
-
-        case 7:
-          return "juillet";
-
-        case 8:
-          return "aout";
-
-        case 9:
-          return "septembre";
-
-        case 10:
-          return "octobre";
-
-        case 11:
-          return "novembre";
-
-        case 12:
-          return "décembre";
-      }
-    },
     async participer() {
       let info = {
         userId: this.userId,
@@ -236,7 +192,7 @@ export default {
       //   "http://localhost:8080/modify-annonce/" + this.idAnnonce;
       this.$router.push({
         name: "modifAnnonce",
-        params: { id: this.idAnnonce },
+        params: { id: this.annonce.id },
       });
     },
   },

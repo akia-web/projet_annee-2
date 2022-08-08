@@ -15,8 +15,30 @@
       <p>Ajouter une annonce</p>
     </div>
 
+    <div class="period">
+      <p>
+        <span
+          @click="period = 'actuelle'"
+          v-bind:class="{ active: period == 'actuelle' }"
+          class="option"
+          >Actuelles</span
+        >
+        <span
+          @click="period = 'passees'"
+          v-bind:class="{ active: period == 'passees' }"
+          class="option"
+          >Passées</span
+        >
+      </p>
+    </div>
+
     <div class="table">
-      <div class="tbody" v-for="item in tableauAnnonces">
+      <!--Annonces en cours-->
+      <div
+        class="tbody"
+        v-for="item in tableauAnnonces.actuelles"
+        v-if="period == 'actuelle'"
+      >
         <div>
           <router-link
             class="lienAnnonce"
@@ -25,14 +47,30 @@
           >
         </div>
         <div>
-          <p>{{ item.date.date }}</p>
+          <p>{{ item.date }}</p>
         </div>
         <div>
           <img class="image" :src="item.images" alt="" />
         </div>
         <div>
           <poubelle @click="deleteAnnonce(item.id)"></poubelle>
-          <plume></plume>
+        </div>
+      </div>
+
+      <!--Annonces passées-->
+      <div
+        class="tbody"
+        v-for="item in tableauAnnonces.passees"
+        v-if="period == 'passees'"
+      >
+        <div>
+          <p class="small" @click="goAnnonce(item.id)">{{ item.name }}</p>
+        </div>
+        <div>
+          <p>{{ item.date }}</p>
+        </div>
+        <div>
+          <img class="image" :src="item.images" alt="" />
         </div>
       </div>
     </div>
@@ -48,6 +86,7 @@ export default {
       lien: "info",
       tableauAnnonces: [],
       idUser: localStorage.getItem("animoId"),
+      period: "actuelle",
     };
   },
   methods: {
@@ -58,26 +97,6 @@ export default {
         (res) => {
           this.resultAnnonces = [];
           let result = res.data;
-
-          for (let i = 0; i < result.length; i++) {
-            var date = new Date(result[i].date.timestamp * 1000);
-            result[i].date.date =
-              date.getDate() +
-              "/" +
-              (date.getMonth() + 1) +
-              "/" +
-              date.getFullYear();
-
-            result[i].date.heure =
-              " à " + date.getHours() + " h " + date.getMinutes();
-
-            if (result[i].description.length < 50) {
-              result[i].descriptionTronque = result[i].description;
-            } else {
-              result[i].descriptionTronque =
-                result[i].description.substring(0, 40) + "...";
-            }
-          }
           this.tableauAnnonces = result;
         },
         (error) => {}
@@ -101,6 +120,9 @@ export default {
     },
     ajoutAnnonce() {
       document.location.href = "nouvelle-annonce";
+    },
+    goAnnonce(id) {
+      this.$router.push("/annonce/" + id);
     },
   },
   beforeMount() {

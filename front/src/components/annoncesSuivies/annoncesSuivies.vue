@@ -20,11 +20,11 @@
       </div>
 
       <div v-if="affiche == 'encours'" class="containerAnnonces">
-        <cartes :tableau="tableauPasse"></cartes>
+        <cartes :tableau="annonces.actuelles"></cartes>
       </div>
 
-      <div v-if="affiche == 'passé'">
-        <cartes :tableau="tableauEnCours"></cartes>
+      <div v-if="affiche == 'passé'" class="containerAnnonces">
+        <cartes :tableau="annonces.passees"></cartes>
       </div>
     </div>
   </div>
@@ -37,6 +37,7 @@ export default {
     return {
       tableauEnCours: [],
       tableauPasse: [],
+      annonces: [],
       userId: localStorage.getItem("animoId"),
       affiche: "encours",
       result: null,
@@ -55,55 +56,14 @@ export default {
 
       await axios.get(url).then(
         (res) => {
-          console.log(res.data);
-          this.result = res.data;
-          for (let i = 0; i < this.result.length; i++) {
-            if (this.result[i].description.length < 50) {
-              this.result[i].descriptionTronque = this.result[i].description;
-            } else {
-              this.result[i].descriptionTronque =
-                this.result[i].description.substring(0, 40) + "...";
-            }
-
-            let date = this.result[i].date.date;
-            this.result[i].date.dates = date.slice(0, 10);
-            this.result[i].date.heure = date.slice(11, 16);
-            let dateAnnonce = new Date(this.result[i].date.dates);
-
-            let dateAnnonceConvertie =
-              dateAnnonce.getFullYear() +
-              "-" +
-              (dateAnnonce.getMonth() + 1) +
-              "-" +
-              dateAnnonce.getDate();
-
-            let dateJour = new Date(Date.now());
-            let dateDuJourConvertie =
-              dateJour.getFullYear() +
-              "-" +
-              (dateJour.getMonth() + 1) +
-              "-" +
-              dateJour.getDate();
-            console.log(dateDuJourConvertie <= dateAnnonceConvertie);
-            console.log("date du jour " + dateDuJourConvertie);
-            console.log("date de l'annonce " + dateAnnonceConvertie);
-
-            if (dateDuJourConvertie <= dateAnnonceConvertie) {
-              this.tableauEnCours.push(this.result[i]);
-            } else {
-              this.tableauPasse.push(this.result[i]);
-            }
-          }
-
-          // for (let j = 0; j < resultAnnonces.length; j++) {
-          //
-          // },
+          this.annonces = res.data;
         },
 
         (error) => {
           console.log(error);
         }
       );
+      console.log(this.annonces);
     },
   },
 

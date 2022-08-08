@@ -14,22 +14,41 @@
         <span
           v-for="item in categories"
           @click="findAnnonceByCategorieName(item.id)"
-          >{{ item.name }}</span
-        >
+          >{{ item.name }}
+          <img
+            class="imgCategorie"
+            :src="require(`@/assets/${item.name}.png`)"
+          />
+        </span>
 
-        <span @click="getAllAnnonces">Tous</span>
+        <span @click="getAllAnnonces">
+          Tous
+          <img class="imgCategorie" :src="require(`@/assets/tous.png`)" />
+        </span>
       </div>
 
       <div class="containerAnnonces">
         <div class="annonces" v-for="item in resultAnnonces" :key="item.id">
-          <h3 class="titre">{{ item.name }}</h3>
+          <div class="containerTitre">
+            <div></div>
+            <h3 class="titre">
+              {{ item.name }}
+            </h3>
+            <img
+              class="imgCategorie"
+              :src="require(`@/assets/${item.categorie.name}.png`)"
+            />
+          </div>
+
           <img :src="item.images" alt="" />
 
           <div class="mainAnnonces">
             <div class="mainGauche">
               <div class="avatar">
                 <img :src="item.avatar" alt="" />
-                <p class="small">{{ item.pseudo }}</p>
+                <p class="small" @click="seeAuthor(item.authorId)">
+                  {{ item.pseudo }}
+                </p>
               </div>
 
               <p class="description small">
@@ -40,7 +59,7 @@
               <p class="small">
                 <img class="pin" src="../../assets/pin.jpg" alt="" /> <br />
                 {{ item.adresse }} <br />
-                {{ item.codepostal }} <br />
+                {{ item.codePostal }} <br />
                 {{ item.ville }}
               </p>
             </div>
@@ -130,17 +149,6 @@ export default {
           console.log(res.data);
 
           for (let i = 0; i < result.length; i++) {
-            // var date = new Date(result[i].date.timestamp * 1000);
-            // result[i].date.date =
-            //   date.getDate() +
-            //   "/" +
-            //   (date.getMonth() + 1) +
-            //   "/" +
-            //   date.getFullYear();
-
-            // result[i].date.heure =
-            //   " à " + date.getHours() + " h " + date.getMinutes();
-
             if (result[i].description.length < 50) {
               result[i].descriptionTronque = result[i].description;
             } else {
@@ -156,6 +164,20 @@ export default {
 
     goAnnonce(id) {
       this.$router.push("/annonce/" + id);
+    },
+    async seeAuthor(id) {
+      let url = "http://localhost:8000/api/seeAnnoncesByUser/" + id;
+      let data = null;
+      await axios.get(url).then(
+        (res) => {
+          data = JSON.stringify(res.data);
+          this.$router.push({
+            name: "getAuthor",
+            params: { data: data },
+          });
+        },
+        (error) => {}
+      );
     },
   },
   beforeMount() {
