@@ -25,9 +25,7 @@ export default {
   },
   methods: {
     getInfo() {
-      //   if (this.data == null) {
-      //     window.location.href = "/";
-      //   }
+ 
       window.scrollTo(0, 0);
 
       this.info = JSON.parse(this.data);

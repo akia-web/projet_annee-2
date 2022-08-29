@@ -47,6 +47,9 @@ class Annonces
     #[ORM\OneToMany(mappedBy: 'Annonces', targetEntity: AnnoncesFollow::class, orphanRemoval: true)]
     private $annoncesFollows;
 
+    #[ORM\Column(type: 'boolean')]
+    private $approuved;
+
     public function __construct()
     {
         $this->annoncesFollows = new ArrayCollection();
@@ -193,6 +196,18 @@ class Annonces
                 $annoncesFollow->setAnnonces(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApprouved(): ?bool
+    {
+        return $this->approuved;
+    }
+
+    public function setApprouved(bool $approuved): self
+    {
+        $this->approuved = $approuved;
 
         return $this;
     }

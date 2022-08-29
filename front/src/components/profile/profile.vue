@@ -1,9 +1,30 @@
 <template>
   <div class="container">
     <div class="gauche">
-      <button @click="lien = 'info'">Informations</button>
-      <button @click="lien = 'annonces'">Mes annonces</button>
-      <button @click="lien = 'annoncesSuivies'">Annonces suivies</button>
+      <span
+        class="menuUser"
+        v-bind:class="{ active: lien == 'info' }"
+        @click="lien = 'info'"
+        >Informations</span
+      >
+      <span
+        class="menuUser"
+        v-bind:class="{ active: lien == 'annonces' }"
+        @click="lien = 'annonces'"
+        >Mes annonces</span
+      >
+      <span
+        class="menuUser"
+        v-bind:class="{ active: lien == 'annoncesSuivies' }"
+        @click="lien = 'annoncesSuivies'"
+        >Annonces suivies</span
+      >
+      <span
+        class="menuUser"
+        v-bind:class="{ active: lien == 'message' }"
+        @click="lien = 'message'"
+        >Message</span
+      >
     </div>
     <div class="profileUser">
       <div class="droite" v-if="lien == 'info'">
@@ -15,6 +36,9 @@
       <div class="droite" v-if="lien == 'annoncesSuivies'">
         <annonces-suivies></annonces-suivies>
       </div>
+      <div class="droite" v-if="lien == 'message'">
+        <messages-user></messages-user>
+      </div>
     </div>
   </div>
 </template>
@@ -23,6 +47,7 @@ import AnnoncesSuivies from "../annoncesSuivies/annoncesSuivies.vue";
 import Bouton from "../bouton/Bouton.vue";
 import TableauAnnonces from "../tableauAnnonces/tableauAnnonces.vue";
 import UserApp from "../user/UserApp.vue";
+import MessagesUser from "../MessagesUser/messagesUser.vue";
 export default {
   name: "Profile",
   data() {
@@ -36,6 +61,7 @@ export default {
     Bouton,
     TableauAnnonces,
     AnnoncesSuivies,
+    MessagesUser,
   },
   beforeMount() {},
 };

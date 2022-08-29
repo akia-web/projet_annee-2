@@ -125,6 +125,7 @@
     </p>
 
     <bouton message="se déconnecter" @click="disconnect"></bouton>
+    <span class="red" @click="supprimer(id)">Supprimer le compte</span>
   </div>
 </template>
 
@@ -133,7 +134,7 @@ import Bouton from "../bouton/Bouton.vue";
 import MessageInvalide from "../messages/messageInvalide/messageInvalide.vue";
 import Plume from "../plume/plume.vue";
 import { getFileImage, loadFileImage } from "../../utils.js";
-import {bus} from "../../main"
+import { bus } from "../../main";
 
 export default {
   name: "UserApp",
@@ -181,6 +182,8 @@ export default {
     disconnect() {
       localStorage.removeItem("animoId");
       localStorage.removeItem("animoEmail");
+      localStorage.removeItem("animoRole");
+
       document.location.href = "/";
     },
 
@@ -320,7 +323,6 @@ export default {
       await axios.post(url, fd).then((res) => {
         this.image = "http://localhost:8000/uploads/" + res.data;
         bus.emit("update-image", this.image);
-        
       });
     },
     annulerImage() {
@@ -333,6 +335,18 @@ export default {
       } else {
         this.wantToModifyImage = true;
       }
+    },
+    async supprimer(id) {
+      let url = "http://127.0.0.1:8000/api/user/" + this.id;
+      await axios.delete(url).then(
+        (res) => {
+          localStorage.removeItem("animoId");
+          localStorage.removeItem("animoEmail");
+          localStorage.removeItem("animoRole");
+          window.location.href = "/";
+        },
+        (error) => {}
+      );
     },
   },
 

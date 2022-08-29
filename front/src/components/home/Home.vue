@@ -23,10 +23,7 @@
           @click="findAnnonceByCategorieName(item.id)"
           v-bind:class="{ active: categorie == item.name }"
           >{{ item.name }}
-          <img
-            class="imgCategorie"
-            :src="require(`@/assets/${item.name}.png`)"
-          />
+          <img class="imgCategorie" :src="item.image" />
         </span>
       </div>
 
@@ -37,10 +34,7 @@
             <h3 class="titre">
               {{ item.name }}
             </h3>
-            <img
-              class="imgCategorie"
-              :src="require(`@/assets/${item.categorie.name}.png`)"
-            />
+            <img class="imgCategorie" :src="item.categorie.image" />
           </div>
 
           <img :src="item.images" alt="" />
@@ -89,6 +83,7 @@
       <p>Chargement des annonces</p>
       <loader-site></loader-site>
     </div>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -96,8 +91,9 @@
 import Bouton from "../bouton/Bouton.vue";
 import Annonces from "../annonces/Annonces.vue";
 import LoaderSite from "../loaderSite/loaderSite.vue";
+import Footer from '../footer/footer.vue';
 export default {
-  components: { Bouton, Annonces, LoaderSite },
+  components: { Bouton, Annonces, LoaderSite, Footer },
   name: "Home",
   data() {
     return {
@@ -138,7 +134,14 @@ export default {
 
       await axios.get(url).then(
         (res) => {
-          this.categories = res.data;
+          let result = [];
+          let data = res.data;
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].annonces != 0) {
+              result.push(data[i]);
+            }
+          }
+          this.categories = result;
           console.log(res.data);
         },
         (error) => {}

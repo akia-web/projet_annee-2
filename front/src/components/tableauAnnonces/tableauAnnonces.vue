@@ -106,7 +106,13 @@ export default {
       let url = "http://localhost:8000/api/annonces/" + id;
       await axios.delete(url);
       let index = 0;
-      let tableau = this.tableauAnnonces;
+      let tableau = null;
+      if (this.period == "actuelle") {
+        tableau = this.tableauAnnonces.actuelles;
+      } else {
+        tableau = this.tableauAnnonces.passees;
+      }
+
       for (let i = 0; i < tableau.length; i++) {
         if (tableau[i].id == id) {
           index = i;
@@ -114,9 +120,7 @@ export default {
         }
       }
       console.log(index);
-      setTimeout(function () {
-        tableau.splice(index, 1);
-      }, 50);
+      tableau.splice(index, 1);
     },
     ajoutAnnonce() {
       document.location.href = "nouvelle-annonce";

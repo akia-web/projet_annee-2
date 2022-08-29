@@ -85,10 +85,19 @@ class AnnoncesRepository extends ServiceEntityRepository
      * @return Annonces[] Returns an array of Annonces objects
     */
     
+
+    public function findAll()
+    {
+        return $this->findBy(array(), array('date' => 'ASC'));
+    }
+
+
+
     public function findByDateAfterNow($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.date > :val')
+            ->andWhere('a.approuved = true')
             ->setParameter('val', $value)
             ->orderBy('a.date', 'ASC')
             ->getQuery()
@@ -112,6 +121,7 @@ class AnnoncesRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->andWhere('a.date > :date')
             ->andWhere('a.categorie = :valCategorie')
+            ->andWhere('a.approuved = true')
             ->setParameter('date', $date)
             ->setParameter(':valCategorie', $categorie)
             ->orderBy('a.date', 'ASC')
@@ -131,5 +141,17 @@ class AnnoncesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findByCategorieAndDateAfterNowAndIsApproval($categorie, $date){
+        return $this->createQueryBuilder('a')
+        ->andWhere('a.date > :date')
+        ->andWhere('a.categorie = :categorie')
+        ->andWhere('a.approuved = true')
+        ->setParameter('date', $date)
+        ->setParameter('categorie', $categorie)
+        ->getQuery()
+        ->getResult()
+    ;
     }
 }

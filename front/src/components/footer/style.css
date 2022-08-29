@@ -1,5 +1,17 @@
 div {
-  background-color: black;
-  min-height: 30vh;
+  background-color: #84c476;
   color: white;
+  padding: 10px;
+}
+
+span {
+  display: block;
+
+  cursor: pointer;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

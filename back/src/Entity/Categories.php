@@ -21,6 +21,12 @@ class Categories
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Annonces::class)]
     private $annonces;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $image;
+
+    #[ORM\Column(type: 'boolean')]
+    private $adminApproval;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -69,6 +75,30 @@ class Categories
                 $annonce->setCategorie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getAdminApproval(): ?bool
+    {
+        return $this->adminApproval;
+    }
+
+    public function setAdminApproval(bool $adminApproval): self
+    {
+        $this->adminApproval = $adminApproval;
 
         return $this;
     }

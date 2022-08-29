@@ -24,7 +24,12 @@ p {
   padding: 2px;
   text-align: center;
 }
-
+.alertYellow {
+  color: #664d03;
+  background-color: #fff3cd;
+  border: 1px solid #ffecb5;
+  padding: 10px;
+}
 .alertGreen {
   color: #155724;
   background-color: #d4edda;

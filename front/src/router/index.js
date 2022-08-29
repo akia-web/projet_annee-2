@@ -10,7 +10,11 @@ import DetailAnnonce from "@/components/detailAnnonce/detailAnnonce.vue";
 import Dashboard from "@/components/dashboard/dashboard.vue";
 import gestionCategories from "@/components/gestionCategories/GestionCategories.vue";
 import infoAuthor from "@/components/infoAuthor/infoAuthor.vue";
-
+import modifCategorie from "@/components/modifCategorie/modifCategorie.vue";
+import bonnesAdresses from "@/components/bonnesAdresses/bonnesAdresses.vue";
+import mentionLegales from "@/components/mentionsLegales/mentionsLegales.vue";
+import politiqueConfidentialite from "@/components/politiqueConfidentialite/politiqueConfidentialite.vue";
+import gallerie from "@/components/gallerie/gallerie.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -69,6 +73,33 @@ const router = createRouter({
       path: "/author", //<- le mot dans l'url + le paramètre avec les ":" devant le paramettre
       component: infoAuthor, // le nom du composant appelé
       props: true,
+    },
+    {
+      name: "modifCategorie",
+      path: "/modifCategorie",
+      component: modifCategorie,
+      props: true,
+    },
+    {
+      path: "/bonnes-adresses",
+      name: "bonnesAdresses",
+      component: bonnesAdresses,
+    },
+   
+    {
+      path: "/mentions-legales",
+      name: "mentionsLegales",
+      component: mentionLegales,
+    },
+    {
+      path: "/politique-confidentialite",
+      name: "politiqueConfidentialite",
+      component: politiqueConfidentialite,
+    },
+    {
+      path: "/gallerie",
+      name: "gallerie",
+      component: gallerie,
     },
   ],
 });

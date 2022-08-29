@@ -38,6 +38,7 @@ class AnnonceController extends AbstractController
         $date = new DateTime($requestAnnonce->{'date'}) ;
 
         $user = $mr->getRepository(User::class)->find($id);
+        $role = $user->getRoles()[0];
         
         $findcategeorie = $mr->getRepository(Categories::class)->findBy(array('name' => $categorieName));
    
@@ -47,6 +48,11 @@ class AnnonceController extends AbstractController
         $annonce->setName($requestAnnonce->{'titre'});
         $annonce->setDescription($requestAnnonce->{'description'});
         $annonce->setCategorie($findcategeorie[0]);
+        if($role == 'admin'){
+            $annonce->setApprouved(true);  
+        }else{
+            $annonce->setApprouved(!$findcategeorie[0]->getAdminApproval());
+        }
         $annonce->setImages($requestAnnonce->{'image'});
         $annonce->setDate($date);
         $annonce->setAdresse($requestAnnonce->{'adresse'});
@@ -67,6 +73,10 @@ class AnnonceController extends AbstractController
        
         $findAllAnnonces = $repo->findAll();
         
+       
+
+
+
         $encoder = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers,$encoder);
@@ -100,24 +110,37 @@ class AnnonceController extends AbstractController
     */
     public function getAllAnnonces2(AnnoncesRepository $repo)
     {
-       
-        $findAllAnnonces = $repo->findBy([], ['date' => 'DESC']);
-        $result = [];
-        for($i = 0; $i<count($findAllAnnonces); $i++){
-            $annonce = new stdClass();
-            $annonce->id = $findAllAnnonces[$i]->getId();
-            $annonce->name = $findAllAnnonces[$i]->getName();
-            $annonce-> date = $findAllAnnonces[$i]->getDate();
-            $annonce-> images = $findAllAnnonces[$i]->getImages();
-            $annonce-> categorie = $findAllAnnonces[$i]->getCategorie()->getName();
-            $annonce-> adresse = $findAllAnnonces[$i]->getAdresse();
-            $annonce-> ville = $findAllAnnonces[$i]->getVille();
-            $annonce-> codepostal = $findAllAnnonces[$i]->getCodepostal();
-            $annonce-> description = $findAllAnnonces[$i]->getDescription();
-
-            array_push($result, $annonce);
-
+        $findAllAnnonces = $repo->findAll();
+        $annonces = [];
+        for($i =0; $i < count($findAllAnnonces); $i++){
+           $annonce = new stdClass();
+           $annonce->id = $findAllAnnonces[$i]->getId();
+           $annonce->name = $findAllAnnonces[$i]->getName();
+           $annonce->date = $findAllAnnonces[$i]->getDate()->format("d-m-Y");
+           $annonce->images = $findAllAnnonces[$i]->getImages();
+           $annonce->isApprouved = $findAllAnnonces[$i]->getApprouved();
+           $annonce->categorie ="http://localhost:8000/uploads/categories/".$findAllAnnonces[$i]->getCategorie()->getName().".png";
+           array_push($annonces, $annonce);
         }
+
+
+        $annoncesEnCours = [];
+        $annoncesPassees = [];
+        for($i =0; $i < count($annonces); $i++){
+            $date = strtotime($annonces[$i]->{'date'});
+            // dd($date);
+            $dateNow = strtotime(date("d-m-Y"));
+            // dd($dateNow);
+            if($date > $dateNow){
+                array_push($annoncesEnCours, $annonces[$i]);
+            }else{
+                array_push($annoncesPassees, $annonces[$i]);
+            }
+        }
+
+        $result = new stdClass();
+        $result->actuelles = $annoncesEnCours;
+        $result->passees= $annoncesPassees;
   
         return new Response(json_encode($result))  ;
 
@@ -275,5 +298,27 @@ class AnnonceController extends AbstractController
         
         return new Response(json_encode($info, Response::HTTP_OK));
     }
-  
+   
+    /**
+     * @Route("api/changeApprouved", methods={"PUT"})
+     */
+    public function changeApprobation (AnnoncesRepository $repo, ManagerRegistry $mr, HttpFoundationRequest $request){
+        $requestAnnonce = json_decode($request->getContent());
+        
+        if($requestAnnonce->{'role'} != 'admin'){
+            return new Response('pas authorisé', Response::HTTP_FORBIDDEN);
+        }
+        
+        $annonce = $repo->find($requestAnnonce->{'id'});
+
+        if($annonce == null){
+            return new Response("L'annonce n'existe pas", Response::HTTP_NOT_FOUND);
+        }
+
+        $manager = $mr->getManager();
+        $annonce->setApprouved(!$annonce->getApprouved());
+        $manager->persist($annonce);
+        $manager->flush();
+        return new Response('ok', Response::HTTP_OK);
+    }
 }

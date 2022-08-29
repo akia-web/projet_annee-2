@@ -112,6 +112,7 @@ class FollowAnnonceController extends AbstractController
     */
     public function getAllFollowAnnonceByUser(AnnoncesFollowRepository $repo, int $userId, AnnoncesService $annonceService){
         $findAnnonceFollow = $repo->findBy(array('user' => $userId));
+        // dd($findAnnonceFollow);
         $annoncesEnCours = [];
         $annoncesPassees=[];
        
@@ -120,10 +121,12 @@ class FollowAnnonceController extends AbstractController
         for($i =0 ; $i<count($findAnnonceFollow); $i++){
             $annonce = new stdClass();
             $annonce->{'Followid'} = $findAnnonceFollow[$i]->getId();
+            
             $annonce->{'id'}= $findAnnonceFollow[$i]->getAnnonces()->getId();
             $annonce->{'name'}= $findAnnonceFollow[$i]->getAnnonces()->getName();
             $annonce->{'images'}= $findAnnonceFollow[$i]->getAnnonces()->getImages();
             $annonce->{'description'}= $annonceService->tronquer($findAnnonceFollow[$i]->getAnnonces()->getDescription());
+            
             $annonce->{'adresse'}= $findAnnonceFollow[$i]->getAnnonces()->getAdresse();
             $annonce->{'ville'}= $findAnnonceFollow[$i]->getAnnonces()->getVille();
             $annonce->{'codepostal'}= $findAnnonceFollow[$i]->getAnnonces()->getCodepostal();

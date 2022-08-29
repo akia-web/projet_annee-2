@@ -87,6 +87,7 @@ class AnnoncesService{
             $categorie = new stdClass;
             $categorie->id = $annonces[$i]->getCategorie()->getId();
             $categorie->name = $annonces[$i]->getCategorie()->getName();
+            $categorie->image = "http://localhost:8000/uploads/categories/".$annonces[$i]->getCategorie()->getImage();
             $annonce->categorie = $categorie;
           
             array_push($result, $annonce);

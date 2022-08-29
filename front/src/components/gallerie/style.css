@@ -1,0 +1,182 @@
+.page {
+  margin-top: 10em;
+  min-height: 70vh;
+}
+
+.addImage {
+  width: 50px;
+}
+.modifyImage {
+  width: 50px;
+  position: relative;
+  top: -30%;
+  left: 16px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+.modifyImage:hover {
+  transform: scale(1.1);
+}
+
+.imageCategorie {
+  width: 300px;
+  height: 200px;
+  object-fit: contain;
+  position: relative;
+  bottom: -50%;
+  left: 50%;
+  transform: translate(-70%, -50%);
+}
+
+.containerImg {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.viewImage {
+  background-color: rgb(225, 243, 212);
+  width: 50%;
+  height: 60vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -38%);
+  border-radius: 10px;
+  box-shadow: 11px 9px 5px -3px rgba(242, 239, 239, 0.84);
+  -webkit-box-shadow: 11px 9px 5px -3px rgba(242, 239, 239, 0.84);
+  z-index: 99;
+}
+
+.viewImage p {
+  position: absolute;
+  top: -20px;
+  right: 20px;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.viewImage p:hover {
+  font-weight: bold;
+}
+
+.sendImage {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.sendImage {
+  background-color: #84c476;
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  transition: 0.4s ease;
+  font-size: 15px;
+  color: white;
+  cursor: pointer;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+}
+
+.sendImage:hover {
+  background-color: #d164a7;
+}
+
+.containerGallerie {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 5px;
+  margin-top: 2em;
+}
+
+.containerGallerie img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.containerGallerie img:hover {
+  filter: contrast(80%);
+}
+
+.vueImageSelect {
+  background-color: rgb(241, 233, 233);
+  width: 90%;
+  height: 95vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+}
+
+.vueImageSelect p {
+  margin-left: 15px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+.vueImageSelect p:hover {
+  font-weight: bold;
+}
+.entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 50px;
+  margin-left: 10px;
+}
+.containerUser {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.containerUser span {
+  transition: 0.2s ease-in-out;
+}
+.containerUser:hover span {
+  color: #84c476;
+}
+.containerUser:hover .avatar {
+  filter: brightness(80%);
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.containerSuppression {
+  display: flex;
+  align-items: center;
+}
+.containerSuppression img {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+.containerImageSelect {
+  display: flex;
+  justify-content: space-between;
+  height: 80%;
+}
+.fleche {
+  width: 50px;
+}
+
+.buttonImage {
+  background-color: transparent;
+  border: none;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.buttonImage:hover {
+  background-color: rgba(211, 211, 211, 0.458);
+}

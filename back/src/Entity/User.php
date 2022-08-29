@@ -38,10 +38,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $profilImage;
 
+    #[ORM\OneToMany(mappedBy: 'expediteur', targetEntity: Messages::class, orphanRemoval: true)]
+    private $messages;
+
+    #[ORM\OneToMany(mappedBy: 'participant1', targetEntity: Conversations::class, orphanRemoval: true)]
+    private $conversations;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Gallerie::class)]
+    private $galleries;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->annoncesFollows = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
+        $this->galleries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +208,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProfilImage(?string $profilImage): self
     {
         $this->profilImage = $profilImage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Messages>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Messages $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setExpediteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Messages $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getExpediteur() === $this) {
+                $message->setExpediteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversations>
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversations $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->setParticipant1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversations $conversation): self
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            // set the owning side to null (unless already changed)
+            if ($conversation->getParticipant1() === $this) {
+                $conversation->setParticipant1(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Gallerie>
+     */
+    public function getGalleries(): Collection
+    {
+        return $this->galleries;
+    }
+
+    public function addGallery(Gallerie $gallery): self
+    {
+        if (!$this->galleries->contains($gallery)) {
+            $this->galleries[] = $gallery;
+            $gallery->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGallery(Gallerie $gallery): self
+    {
+        if ($this->galleries->removeElement($gallery)) {
+            // set the owning side to null (unless already changed)
+            if ($gallery->getUser() === $this) {
+                $gallery->setUser(null);
+            }
+        }
 
         return $this;
     }

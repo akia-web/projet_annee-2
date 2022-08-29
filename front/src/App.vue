@@ -1,12 +1,8 @@
 <template>
-  <!-- <Navbar v-on:connect="getUser($event)" /> -->
-  <Navbar  />
-  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-
-  <!--  <router-link :to="{name: 'dynamic', params: { id: 33 } }"> page </router-link> -->
-
-  <router-view />
-  <!-- <Footer /> -->
+  <div>
+    <Navbar />
+    <router-view />
+  </div>
 </template>
 
 <script>
@@ -18,8 +14,6 @@ import ConnexionApp from "./components/connexion/ConnexionApp.vue";
 
 import Navbar from "./components/navbar/Navbar.vue";
 
-import Footer from "./components/footer/footer.vue";
-
 export default {
   name: "App",
   data() {
@@ -30,16 +24,13 @@ export default {
       email: null,
     };
   },
-  methods: {
- 
-  },
+  methods: {},
 
   components: {
     HelloWorld,
     lalala: LalalaMessage,
     ConnexionApp,
     Navbar,
-    Footer,
   },
 };
 </script>

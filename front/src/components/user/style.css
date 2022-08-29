@@ -1,5 +1,4 @@
 .identity {
-  /* margin-top: 100em; */
   display: flex;
   flex-direction: column;
 }
@@ -138,6 +137,17 @@ p {
 #Capa_1 {
   fill: #84c476;
   width: 50px;
+}
+
+.red {
+  color: rgb(149, 20, 20);
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.red:hover {
+  color: rgb(159, 13, 13);
+  text-decoration: underline;
 }
 @media (min-width: 1250px) {
   .identity {

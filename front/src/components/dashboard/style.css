@@ -1,6 +1,9 @@
 h1 {
   text-align: center;
 }
+.page {
+  min-height: 75vh;
+}
 
 .identity {
   display: flex;
@@ -52,6 +55,78 @@ img {
 .image {
   border-radius: 7px;
 }
+
+input[type="checkbox"] {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: lightgrey;
+  border-radius: 20px;
+  box-shadow: inset 0 0 5px rgb(182, 179, 179);
+}
+input:checked[type="checkbox"] {
+  background-color: #84c476;
+}
+input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transform: scale(1.1);
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: 0.2s;
+}
+
+input:checked[type="checkbox"]::before {
+  left: 20px;
+}
+
+.logo {
+  width: 30px;
+}
+.containerMenu {
+  margin-top: 4em;
+  margin-bottom: 4em;
+}
+.menuDashboard {
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.menuDashboard:hover {
+  color: #84c476;
+}
+.menuDashboardActive {
+  color: #84c476;
+  border-bottom: #84c476 1px solid;
+}
+
+.rouge {
+  color: rgb(143, 11, 11);
+}
+
+.containerAnnonceOptions {
+  margin-top: 2em;
+}
+
+.containerAnnonceOptions span {
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.annonceOptionActive {
+  background-color: #84c476;
+  color: white;
+}
+
 @media (min-width: 1250px) {
   .menuAjout {
     width: 30%;

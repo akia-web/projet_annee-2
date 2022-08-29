@@ -1,3 +1,142 @@
 .component {
-  margin-top: 10em;
+  margin-top: 2em;
+}
+
+.imageCategorie {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.btnCategorie {
+  cursor: pointer;
+  padding: 8px;
+  border: none;
+  border-radius: 7px;
+  transition: 0.2s ease-in-out;
+
+  margin-bottom: 3em;
+}
+.ajout {
+  background-color: lightgray;
+}
+
+.annuler {
+  background-color: rgb(157, 63, 63);
+  color: white;
+}
+.ajout:hover {
+  background-color: #84c476;
+  color: white;
+}
+
+.annuler:hover {
+  background-color: rgb(156, 29, 29);
+}
+.ContainerNewCategorie {
+  margin-top: 3em;
+}
+
+input[type="text"] {
+  display: block;
+  width: 30%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input:focus {
+  border-color: #84c476;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(132, 196, 118, 0.25);
+}
+.btnAddImg {
+  /* background-color: #86beeb; */
+  padding: 7px;
+  border-radius: 5px;
+  border-color: transparent;
+  transition: 0.4s ease;
+  cursor: pointer;
+
+  margin-right: 2em;
+}
+.btnAddImg:hover {
+  background-color: #3f98e1;
+}
+
+.btnAddImg img {
+  width: 50px;
+}
+
+.error {
+  color: #664d03;
+  background-color: #fff3cd;
+  border: 1px solid #ffecb5;
+  padding: 10px;
+  width: 30%;
+}
+
+.danger {
+  padding: 10px;
+  width: 30%;
+  color: #842029;
+  background-color: #f8d7da;
+  border-color: 1px solid #f5c2c7;
+}
+
+.containerImg {
+  display: flex;
+  align-items: center;
+}
+
+input[type="checkbox"] {
+  margin-bottom: 2em;
+}
+
+.envoyer {
+  padding: 10px;
+  background-color: #84c476;
+  border: none;
+  border-radius: 10px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+  transition: 0.2s ease-in-out;
+}
+
+.envoyer:hover {
+  background-color: #d164a7;
+}
+
+table {
+  margin-top: 2em;
+  text-align: center;
+  /* border: 3px solid black; */
+  width: 100%;
+  /* border-collapse: collapse; */
+}
+
+.entete {
+  background-color: #84c476;
+  /* border: 1px solid black; */
+}
+tbody {
+  background-color: rgb(237, 239, 233);
+}
+.titreCategorie {
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.titreCategorie:hover {
+  color: #84c476;
 }

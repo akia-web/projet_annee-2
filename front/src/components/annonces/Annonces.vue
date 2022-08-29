@@ -1,8 +1,17 @@
 <template>
   <div class="page">
-    <h2>Créer une nouvelle annonce</h2>
+    <div class="entete">
+      <h2>Créer une nouvelle annonce</h2>
+    </div>
+
     <message-invalide :tableau="message"></message-invalide>
 
+    <div v-if="isAdminApproval">
+      <p v-if="role != 'admin'" class="alert alertYellow">
+        Les annonces de type {{ categorie }} sont soumises à la vérification
+        d'un administrateur
+      </p>
+    </div>
     <div class="formulaire">
       <div class="gauche">
         <div class="flex">
@@ -38,12 +47,7 @@
 
       <div class="droite">
         <input type="text" placeholder="adresse" v-model="adresse" />
-        <input
-          type="text"
-          placeholder="complément d'adresse"
-          v-model="complementAdresse"
-          @change="afficheCarte"
-        />
+
         <input
           type="text"
           placeholder="code postal"
@@ -110,7 +114,6 @@ export default {
       titre: null,
       description: null,
       adresse: null,
-      complementAdresse: null,
       codePostal: null,
       ville: null,
       image: null,
@@ -122,6 +125,9 @@ export default {
       imgSelected: null,
       send: false,
       message: [],
+      categorieChoisie: null,
+      isAdminApproval: false,
+      role: localStorage.getItem("animoRole"),
     };
   },
   methods: {
@@ -280,6 +286,15 @@ export default {
         },
         (error) => {}
       );
+    },
+  },
+  watch: {
+    categorie: function (val) {
+      for (let i = 0; i < this.allCategories.length; i++) {
+        if (val == this.allCategories[i].name) {
+          this.isAdminApproval = this.allCategories[i].adminApproval;
+        }
+      }
     },
   },
   beforeMount() {

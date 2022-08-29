@@ -60,6 +60,7 @@ img {
   position: absolute;
   width: 90%;
   top: 10px;
+  z-index: 98;
 }
 
 .rechercheImage {

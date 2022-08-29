@@ -1,0 +1,22 @@
+.page {
+  margin-top: 10em;
+  margin-bottom: 5em;
+}
+
+p {
+  margin-bottom: 2em;
+  font-size: 16px;
+}
+span {
+  font-style: italic;
+  font-size: 14px;
+}
+
+h2 {
+  color: #84c476;
+  font-size: 20px;
+}
+
+h1 {
+  text-align: center;
+}

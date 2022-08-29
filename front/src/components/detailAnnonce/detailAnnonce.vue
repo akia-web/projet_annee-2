@@ -97,7 +97,7 @@ export default {
       affiche: false,
       message: [],
       lienCarte: null,
-      email: localStorage.getItem("animoEmail"),
+      emailUser: localStorage.getItem("animoEmail"),
       userId: localStorage.getItem("animoId"),
       idAnnonce: null,
       participe: null,
@@ -116,9 +116,9 @@ export default {
     },
     async getInfo() {
       let urlEnCours = window.location.href;
-      let id = urlEnCours.substring(30);
-      let url = "http://localhost:8000/api/annoncesById/" + id;
-      console.log(id);
+      this.idAnnonce = urlEnCours.substring(30);
+      let url = "http://localhost:8000/api/annoncesById/" + this.idAnnonce;
+      // console.log(id);
       await axios.get(url).then(
         (res) => {
           console.log(res.data);
@@ -133,7 +133,7 @@ export default {
             "&output=embed";
           this.affiche = true;
 
-          if (res.data.authorEmail == this.email) {
+          if (res.data.authorEmail == this.emailUser) {
             this.myAnnonce = true;
           } else {
             this.myAnnonce = false;
@@ -150,7 +150,7 @@ export default {
         "http://localhost:8000/api/isFollowAnnonce?userId=" +
         this.userId +
         "&idAnnonce=" +
-        id;
+        this.idAnnonce;
 
       await axios.get(url).then(
         (res) => {
@@ -163,7 +163,7 @@ export default {
     async participer() {
       let info = {
         userId: this.userId,
-        emailUser: this.email,
+        emailUser: this.emailUser,
         idAnnonce: this.idAnnonce,
       };
       console.log(info);
@@ -178,6 +178,7 @@ export default {
           this.message.push(
             "une erreur s'est produite lors de l'inscription à la participation"
           );
+          console.log(error.response.data);
         }
       );
     },

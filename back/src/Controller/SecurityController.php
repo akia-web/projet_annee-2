@@ -203,5 +203,64 @@ class SecurityController extends AbstractController
         return new Response($fichier, Response::HTTP_OK);
     }
 
+    /**
+     * @Route("api/pseudoUser", methods={"GET"})
+     */
+    public function getByPseudoUser( HttpFoundationRequest $request, UserRepository $repo){
+        
+        $search = $request->query->get("search");
+        $id = $request->query->get("id");
+        $users = $repo->findUserBySearch($search);
+        $result = [];
+        $admin = null;
+        $listAdmin = $repo->findAdmin("Pet'Activity");
+        for($j = 0; $j < count($listAdmin); $j++){
 
+            if($listAdmin[$j]->getRoles()[0] == 'admin'){
+                $userAdmin = new stdClass();
+                $userAdmin->pseudo = $listAdmin[$j]->getPseudo();
+                $userAdmin->id = $listAdmin[$j]->getId();
+                $userAdmin->images ="http://localhost:8000/uploads/".$listAdmin[$j]->getProfilImage();
+                $admin = $userAdmin;
+                array_push($result , $userAdmin);
+            }
+        }
+        for($i =0; $i<count($users); $i++){
+            if($users[$i]->getRoles()[0]!='admin' && $users[$i]->getId() != $id){
+            
+                $user = new stdClass();
+                $user->pseudo = $users[$i]->getPseudo();
+                $user->id = $users[$i]->getId();
+                $user->images ="http://localhost:8000/uploads/".$users[$i]->getProfilImage();
+                array_push($result,$user);
+            }
+          
+        }
+        if($request->query->get("search") == ""){
+            $result = $admin;
+        }
+        return new Response(json_encode($result), Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("api/user/{id}", methods={"DELETE"})
+     */
+    public function deleteUser(ManagerRegistry $mr, User $user){
+        $image = $user->getProfilImage();
+        
+        $em = $mr->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        if($image != null){
+            $ancienneImageExist = file_exists($this->getParameter('images_directory')."/".$image);
+            if($ancienneImageExist){
+                unlink($this->getParameter('images_directory')."/".$image);
+            }
+        }
+        
+        
+        return new Response('ok', Response::HTTP_OK);
+        
+    }
 }
